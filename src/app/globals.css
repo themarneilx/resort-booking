@@ -21,7 +21,7 @@
 }
 
 body {
-  background: var(--background);
+  background: url('/frontpage.jpg') center / cover no-repeat fixed;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
