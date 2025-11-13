@@ -108,6 +108,9 @@ export default function Home() {
         </div>
       </section>
       <GallerySection />
+      
     </div>
+
+
   );
 }
