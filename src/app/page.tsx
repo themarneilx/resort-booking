@@ -1,103 +1,116 @@
-import Image from "next/image";
+"use client";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AnimatedBackground from "@/components/AnimatedBackground";
+import GallerySection from "@/components/GallerySection";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const heroRef = useRef<HTMLHeadingElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero intro animation
+      gsap.from(heroRef.current, {
+        y: 60,
+        opacity: 0,
+        scale: 0.85,
+        duration: 1.2,
+        ease: "power3.out"
+      });
+      // Form fade & rise
+      gsap.from(formRef.current, {
+        y: 40,
+        opacity: 0,
+        duration: 1,
+        delay: 0.4,
+        ease: "power2.out"
+      });
+      // Subtle scroll reactive scale
+      gsap.to(heroRef.current, {
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "+=400",
+          scrub: true
+        },
+        scale: 1.05,
+        ease: "none"
+      });
+    });
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <div className="min-h-screen w-full flex flex-col items-center justify-center px-6 py-24 sm:py-32 gap-16 relative">
+      <AnimatedBackground />
+      {/* Background handled globally via body background */}
+      <header className="text-center max-w-4xl mx-auto">
+        <h1 ref={heroRef} className="text-5xl sm:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-teal-400 to-emerald-300 drop-shadow-xl">
+          Escape To Paradise
+        </h1>
+        <p className="mt-6 text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
+          Book your dream resort stay.
+        </p>
+      </header>
+      <div ref={formRef} className="w-full max-w-3xl bg-white/40 dark:bg-black/30 backdrop-blur-xl rounded-2xl shadow-xl p-8 border border-white/40 dark:border-white/20 ring-1 ring-white/30 grid gap-6">
+        <form className="grid gap-6 md:grid-cols-2" onSubmit={(e) => e.preventDefault()}>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Arrival</label>
+            <input type="date" className="input input-bordered w-full" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Departure</label>
+            <input type="date" className="input input-bordered w-full" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Guests</label>
+            <input type="number" min={1} defaultValue={2} className="input input-bordered w-full" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium">Room Type</label>
+            <select className="select select-bordered w-full">
+              <option>Deluxe Suite</option>
+              <option>Ocean View</option>
+              <option>Garden Villa</option>
+              <option>Presidential</option>
+            </select>
+          </div>
+          <div className="md:col-span-2 flex flex-col gap-2">
+            <label className="text-sm font-medium">Special Requests</label>
+            <textarea rows={3} className="textarea textarea-bordered resize-none" placeholder="e.g. Late check-in, dietary needs" />
+          </div>
+          <div className="md:col-span-2 flex items-center justify-between gap-4 flex-wrap">
+            <div className="text-sm text-foreground/70">Live availability & dynamic pricing coming next.</div>
+            <button className="btn btn-primary btn-lg rounded-full px-8">Search Availability</button>
+          </div>
+        </form>
+      </div>
+      {/* Feature cards */}
+      <section className="max-w-5xl mx-auto grid gap-10 py-8 text-white">
+        <h2 className="text-3xl font-semibold">Why Choose Us</h2>
+        <div className="grid gap-6 md:grid-cols-3 text-sm">
+          <div className="p-5 rounded-xl bg-gradient-to-br from-indigo-500/30 to-sky-400/30 border border-white/30 backdrop-blur">
+            <h3 className="font-semibold mb-2">Curated Luxury</h3>
+            <p>Hand-picked resorts ensuring top-tier comfort & unforgettable experiences.</p>
+          </div>
+          <div className="p-5 rounded-xl bg-gradient-to-br from-teal-500/30 to-emerald-400/30 border border-white/30 backdrop-blur">
+            <h3 className="font-semibold mb-2">[Placeholder here]</h3>
+            <p>[Text here]</p>
+          </div>
+          <div className="p-5 rounded-xl bg-gradient-to-br from-pink-500/30 to-purple-500/30 border border-white/30 backdrop-blur">
+            <h3 className="font-semibold mb-2">[Placeholder here]</h3>
+            <p>[Text here]</p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+      <GallerySection />
+      
     </div>
+
+
   );
 }
