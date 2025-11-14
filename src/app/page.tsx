@@ -74,9 +74,9 @@ export default function Home() {
             <label className="text-sm font-medium">Room Type</label>
             <select className="select select-bordered w-full">
               <option>Deluxe Suite</option>
-              <option>Ocean View</option>
-              <option>Garden Villa</option>
-              <option>Presidential</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
             </select>
           </div>
           <div className="md:col-span-2 flex flex-col gap-2">
