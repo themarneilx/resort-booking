@@ -63,3 +63,22 @@ _Add screenshots or GIF demos here._
 ```bash
 git clone https://github.com/<your-username>/<repo-name>.git
 cd <repo-name>
+```
+
+### 2. Install dependencies
+```bash
+npm install
+```
+
+### 3. Run the development server
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+--- 
+
+## 🙌 Contributing
+
+Contributions are welcome!
+Open an issue or submit a pull request for suggestions, improvements, or bug fixes.
