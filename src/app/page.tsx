@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import AnimatedBackground from "@/components/AnimatedBackground";
+
 import GallerySection from "@/components/GallerySection";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -46,24 +46,26 @@ export default function Home() {
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center px-6 py-24 sm:py-32 gap-16 relative">
-      <AnimatedBackground />
-      {/* Background handled globally via body background */}
-      <header className="text-center max-w-4xl mx-auto">
-        <h1 ref={heroRef} className="text-5xl sm:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-teal-400 to-emerald-300 drop-shadow-xl">
+      <section className="relative w-full h-screen overflow-hidden">
+        <div aria-hidden className="absolute inset-0 z-0">
+          <img src="/frontpage.jpg" alt="Resort hero" className="h-full w-full object-cover scale-110" style={{ objectPosition: "center 1%" }} />
+        </div>
+      <header className="relative z-10 text-center max-w-4xl mx-auto">
+        <h1 ref={heroRef} className="text-5xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-lg">
           Escape To Paradise
         </h1>
-        <p className="mt-6 text-lg sm:text-xl text-white/90 max-w-2xl mx-auto">
+        <p className="mt-6 mb-10 text-lg sm:text-xl text-white/90 drop-shadow max-w-2xl mx-auto">
           Book your dream resort stay.
         </p>
       </header>
-      <div ref={formRef} className="w-full max-w-3xl bg-white/40 dark:bg-black/30 backdrop-blur-xl rounded-2xl shadow-xl p-8 border border-white/40 dark:border-white/20 ring-1 ring-white/30 grid gap-6">
-        <form className="grid gap-6 md:grid-cols-2" onSubmit={(e) => e.preventDefault()}>
+      <div id="booking" ref={formRef} className="w-full max-w-6xl mx-auto relative z-10 card bg-base-100 border border-base-200 shadow-xl p-6 rounded-2xl">
+        <form className="grid gap-4 md:grid-cols-5 items-end" onSubmit={(e) => e.preventDefault()}>
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">Arrival</label>
+            <label className="text-sm font-medium">Check-in</label>
             <input type="date" className="input input-bordered w-full" />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium">Departure</label>
+            <label className="text-sm font-medium">Check-out</label>
             <input type="date" className="input input-bordered w-full" />
           </div>
           <div className="flex flex-col gap-2">
@@ -79,31 +81,27 @@ export default function Home() {
               <option>4</option>
             </select>
           </div>
-          <div className="md:col-span-2 flex flex-col gap-2">
-            <label className="text-sm font-medium">Special Requests</label>
-            <textarea rows={3} className="textarea textarea-bordered resize-none" placeholder="e.g. Late check-in, dietary needs" />
-          </div>
-          <div className="md:col-span-2 flex items-center justify-between gap-4 flex-wrap">
-            <div className="text-sm text-foreground/70">Live availability & dynamic pricing coming next.</div>
-            <button className="btn btn-primary btn-lg rounded-full px-8">Search Availability</button>
+          <div className="flex md:col-span-1">
+            <button className="btn btn-primary btn-lg w-full rounded-md">Search Availability</button>
           </div>
         </form>
       </div>
+      </section>
       {/* Feature cards */}
-      <section className="max-w-5xl mx-auto grid gap-10 py-8 text-white">
+      <section id="whyus" className="relative -mt-8 max-w-5xl mx-auto grid gap-10 py-12 text-neutral-900">
         <h2 className="text-3xl font-semibold">Why Choose Us</h2>
         <div className="grid gap-6 md:grid-cols-3 text-sm">
-          <div className="p-5 rounded-xl bg-gradient-to-br from-indigo-500/30 to-sky-400/30 border border-white/30 backdrop-blur">
+          <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
             <h3 className="font-semibold mb-2">Curated Luxury</h3>
             <p>Hand-picked resorts ensuring top-tier comfort & unforgettable experiences.</p>
           </div>
-          <div className="p-5 rounded-xl bg-gradient-to-br from-teal-500/30 to-emerald-400/30 border border-white/30 backdrop-blur">
-            <h3 className="font-semibold mb-2">[Placeholder here]</h3>
-            <p>[Text here]</p>
+          <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
+            <h3 className="font-semibold mb-2">Seamless Booking</h3>
+            <p>Book in minutes with clear pricing and real-time updates.</p>
           </div>
-          <div className="p-5 rounded-xl bg-gradient-to-br from-pink-500/30 to-purple-500/30 border border-white/30 backdrop-blur">
-            <h3 className="font-semibold mb-2">[Placeholder here]</h3>
-            <p>[Text here]</p>
+          <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
+            <h3 className="font-semibold mb-2">Trusted Support</h3>
+            <p>Our team is here 24/7 to help make your stay perfect.</p>
           </div>
         </div>
       </section>

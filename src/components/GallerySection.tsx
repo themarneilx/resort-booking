@@ -10,21 +10,21 @@ export default function GallerySection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray<HTMLDivElement>(".gallery-card");
-      cards.forEach((card, i) => {
-        gsap.from(card, {
-          opacity: 0,
-          y: 60,
-          rotateX: 6,
-          duration: 0.9,
-          ease: "power3.out",
-          delay: i * 0.05,
-          scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
-            toggleActions: "play none none reverse",
-          },
-        });
+      ScrollTrigger.batch(".gallery-card", {
+        start: "top 85%",
+        onEnter: (batch) =>
+          gsap.fromTo(
+            batch as gsap.TweenTarget,
+            { opacity: 0, y: 30 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power2.out",
+              stagger: { each: 0.08 },
+            }
+          ),
+        once: true,
       });
     }, containerRef);
     return () => ctx.revert();
@@ -33,17 +33,20 @@ export default function GallerySection() {
   const items = Array.from({ length: 9 }, (_, i) => i);
 
   return (
-    <section ref={containerRef} id="gallery" className="w-full py-24 bg-white/30 dark:bg-white/10 backdrop-blur-sm border-y border-white/30">
+    <section ref={containerRef} id="gallery" className="w-full min-h-screen py-24 bg-[#f6f5f1]">
       <div className="max-w-6xl mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-12">Resort Gallery</h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((i) => (
-            <div key={i} className="gallery-card card bg-white/25 dark:bg-neutral/30 backdrop-blur-xl border border-white/30 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+            <div key={i} className="gallery-card card transform-gpu will-change-transform bg-base-100 border border-base-200 shadow-xl hover:shadow-2xl transition-all duration-300 group">
               <figure className="overflow-hidden rounded-t-2xl">
                 <img
                   src={i % 2 === 0 ? "/frontpage.jpg" : "/beach1.jpg"}
                   alt={`Resort ${i + 1}`}
-                  className="h-64 w-full object-cover scale-105 group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
+                  fetchPriority="low"
+                  className="h-64 w-full object-cover transform-gpu will-change-transform scale-105 group-hover:scale-110 transition-transform duration-500"
                 />
               </figure>
               <div className="card-body">
