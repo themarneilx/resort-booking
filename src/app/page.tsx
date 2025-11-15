@@ -17,13 +17,8 @@ export default function Home() {
   const roomsRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+useEffect(() => {
     const ctx = gsap.context(() => {
-      // Smooth scroll
-      ScrollTrigger.defaults({
-        ease: "power2.inOut",
-      });
-
       // Hero intro animation
       gsap.from(heroRef.current, { y: 60, opacity: 0, scale: 0.85, duration: 1.2, ease: "power3.out" });
       gsap.from(formRef.current, { y: 40, opacity: 0, duration: 1, delay: 0.4, ease: "power2.out" });
