@@ -76,9 +76,9 @@ export default function Home() {
             Experience unparalleled luxury and tranquility. Book your dream escape today.
           </p>
         </header>
-        <div id="booking" ref={formRef} className="w-full max-w-6xl mx-auto relative z-10 -mt-8">
+        <div id="booking" ref={formRef} className="w-full max-w-md mx-auto relative z-10 -mt-8">
           <div className="card bg-base-100/80 backdrop-blur-md border border-base-300 shadow-2xl p-6 sm:p-8 rounded-2xl">
-            <form className="grid gap-4 sm:grid-cols-2 md:grid-cols-[1fr,1fr,auto,auto,auto] items-end" onSubmit={(e) => e.preventDefault()}>
+            <form className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 items-end justify-center" onSubmit={(e) => e.preventDefault()}>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium flex items-center gap-2"><Calendar size={16} /> Check-in</label>
                 <input type="date" className="input input-bordered w-full" />
@@ -93,15 +93,15 @@ export default function Home() {
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium flex items-center gap-2"><BedDouble size={16} /> Room Type</label>
-                <select className="select select-bordered w-full">
+                <select className="select select-bordered w-full pl-3"> {/* Added pl-3 here */}
                   <option>Deluxe Suite</option>
                   <option>Ocean View</option>
                   <option>Garden Bungalow</option>
                   <option>Presidential Suite</option>
                 </select>
               </div>
-              <div className="flex">
-                <button className="btn btn-primary btn-lg w-full rounded-lg flex items-center gap-2">
+              <div className="flex col-span-full justify-center"> {/* Added col-span-full and justify-center here */}
+                <button className="btn btn-primary btn-lg w-full sm:w-auto rounded-lg flex items-center gap-2">
                   <Search size={20} />
                   Search
                 </button>
