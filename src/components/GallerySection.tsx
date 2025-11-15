@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import Image from "next/image"; // Import the Image component
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -43,12 +44,14 @@ export default function GallerySection() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((i) => (
             <div key={i} className="gallery-card card bg-base-100 shadow-lg overflow-hidden group transform-gpu will-change-transform">
-              <figure className="aspect-w-4 aspect-h-3">
-                <img
+              {/* We add 'relative' here to provide a container for 
+                the <Image> component when using layout="fill".
+              */}
+              <figure className="aspect-w-4 aspect-h-3 relative">
+                <Image
                   src={i % 2 === 0 ? "/frontpage.jpg" : "/beach1.jpg"}
                   alt={`Resort view ${i + 1}`}
-                  loading="lazy"
-                  decoding="async"
+                  fill // The 'fill' prop makes the image fill its parent
                   className="w-full h-full object-cover transform-gpu will-change-transform scale-100 group-hover:scale-110 transition-transform duration-500 ease-in-out"
                 />
               </figure>

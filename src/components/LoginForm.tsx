@@ -3,8 +3,14 @@
 import React, { useState } from "react";
 import { User, Eye, EyeOff, LogIn, ArrowLeft } from "lucide-react";
 
-// Helper component for styled social buttons
-const SocialIcon = ({ icon, label }) => (
+// 1. Define the interface for the component's props
+interface SocialIconProps {
+  icon: React.ReactNode; // or string
+  label: string;
+}
+
+// 2. Apply the interface to the component's props
+const SocialIcon = ({ icon, label }: SocialIconProps) => (
   <button className="btn btn-ghost w-full justify-center text-sm gap-2 h-12 min-h-12 border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150 shadow-sm font-semibold">
     <span className="text-lg font-bold">
       {/* Simple representation of Google (G) and Apple () logos */}
@@ -15,6 +21,7 @@ const SocialIcon = ({ icon, label }) => (
 );
 
 const LoginForm = () => {
+  // ... rest of your code ...
   const [showPassword, setShowPassword] = useState(false);
 
   // Using an Unsplash URL as a placeholder image for the visual style.
@@ -137,7 +144,7 @@ const LoginForm = () => {
 
           {/* Sign Up Link */}
           <div className="text-center mt-10 text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a href="#" className="link text-teal-600 font-medium hover:text-teal-700">
               Sign up
             </a>
