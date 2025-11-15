@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import GallerySection from "@/components/GallerySection";
+import VideoBackground from "@/components/VideoBackground";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,12 +46,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center px-6 py-24 sm:py-32 gap-16 relative">
-      <section className="relative w-full h-screen overflow-hidden">
+    <div className="min-h-screen w-full flex flex-col items-center gap-16 relative">
+      <section className="relative w-full h-screen overflow-hidden flex flex-col justify-center items-center gap-8">
         <div aria-hidden className="absolute inset-0 z-0">
-          <img src="/frontpage.jpg" alt="Resort hero" className="h-full w-full object-cover scale-110" style={{ objectPosition: "center 1%" }} />
+          <VideoBackground />
         </div>
-      <header className="relative z-10 text-center max-w-4xl mx-auto">
+      <header className="relative z-10 text-center max-w-4xl mx-auto px-6">
         <h1 ref={heroRef} className="text-5xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-lg">
           Escape To Paradise
         </h1>
@@ -88,7 +89,7 @@ export default function Home() {
       </div>
       </section>
       {/* Feature cards */}
-      <section id="whyus" className="relative -mt-8 max-w-5xl mx-auto grid gap-10 py-12 text-neutral-900">
+      <section id="whyus" className="relative -mt-8 max-w-5xl mx-auto grid gap-10 py-12 text-neutral-900 px-6">
         <h2 className="text-3xl font-semibold">Why Choose Us</h2>
         <div className="grid gap-6 md:grid-cols-3 text-sm">
           <div className="p-5 rounded-xl bg-neutral-100 border border-neutral-200">
