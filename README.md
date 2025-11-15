@@ -41,7 +41,7 @@ Designed to deliver a beautiful, responsive, and smooth user experience for gues
 
 ## 🖼️ Preview
 
-_Add screenshots or GIF demos here._
+
 
 ---
 
@@ -61,8 +61,8 @@ _Add screenshots or GIF demos here._
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
+git clone https://github.com/themarneilx/resort-booking.git
+cd resort-booking
 ```
 
 ### 2. Install dependencies
