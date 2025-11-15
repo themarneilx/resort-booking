@@ -1,5 +1,7 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default;
+}
 
 :root {
   --background: #ffffff;
@@ -21,7 +23,7 @@
 }
 
 body {
-  background: url('/frontpage.jpg') center / cover no-repeat fixed;
-  color: var(--foreground);
+  background-color: #f6f5f1; /* dirty white */
+  color: #111111;
   font-family: Arial, Helvetica, sans-serif;
 }
