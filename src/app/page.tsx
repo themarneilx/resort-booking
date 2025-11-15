@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import GallerySection from "@/components/GallerySection";
+import VideoBackground from "@/components/VideoBackground";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,10 +46,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center px-6 py-24 sm:py-32 gap-16 relative">
+    <div className="min-h-screen w-full flex flex-col items-center px-6 gap-16 relative">
       <section className="relative w-full h-screen overflow-hidden">
         <div aria-hidden className="absolute inset-0 z-0">
-          <img src="/frontpage.jpg" alt="Resort hero" className="h-full w-full object-cover scale-110" style={{ objectPosition: "center 1%" }} />
+          <VideoBackground />
         </div>
       <header className="relative z-10 text-center max-w-4xl mx-auto">
         <h1 ref={heroRef} className="text-5xl sm:text-7xl font-bold tracking-tight text-white drop-shadow-lg">
