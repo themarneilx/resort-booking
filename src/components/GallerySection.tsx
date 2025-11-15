@@ -32,7 +32,44 @@ export default function GallerySection() {
     return () => ctx.revert();
   }, []);
 
-  const items = Array.from({ length: 6 }, (_, i) => i);
+  const galleryItems = [
+    {
+      src: "/frontpage.jpg",
+      alt: "Resort view 1",
+      title: "Enchanting Vistas",
+      description: "A glimpse into the serene and captivating atmosphere of our resort.",
+    },
+    {
+      src: "/beach1.jpg",
+      alt: "Resort view 2",
+      title: "Pristine Beaches",
+      description: "Relax on our white-sand beaches and enjoy the crystal-clear water.",
+    },
+    {
+      src: "/frontpage.jpg",
+      alt: "Resort view 3",
+      title: "Luxurious Pools",
+      description: "Take a dip in one of our infinity pools with a stunning ocean view.",
+    },
+    {
+      src: "/beach1.jpg",
+      alt: "Resort view 4",
+      title: "Gourmet Dining",
+      description: "Savor the exquisite flavors from our world-class restaurants.",
+    },
+    {
+      src: "/frontpage.jpg",
+      alt: "Resort view 5",
+      title: "Private Villas",
+      description: "Experience ultimate privacy and comfort in our exclusive villas.",
+    },
+    {
+      src: "/beach1.jpg",
+      alt: "Resort view 6",
+      title: "Rejuvenating Spa",
+      description: "Indulge in a variety of treatments at our award-winning spa.",
+    },
+  ];
 
   return (
     <section ref={containerRef} id="gallery" className="w-full py-20 sm:py-28 bg-base-200/50">
@@ -42,22 +79,23 @@ export default function GallerySection() {
             <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">Explore the stunning beauty and luxurious corners of our exclusive resort.</p>
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((i) => (
+          {galleryItems.map((item, i) => (
             <div key={i} className="gallery-card card bg-base-100 shadow-lg overflow-hidden group transform-gpu will-change-transform">
               {/* We add 'relative' here to provide a container for 
                 the <Image> component when using layout="fill".
               */}
-              <figure className="aspect-w-4 aspect-h-3 relative">
+              <div className="overflow-hidden">
                 <Image
-                  src={i % 2 === 0 ? "/frontpage.jpg" : "/beach1.jpg"}
-                  alt={`Resort view ${i + 1}`}
-                  fill // The 'fill' prop makes the image fill its parent
-                  className="w-full h-full object-cover transform-gpu will-change-transform scale-100 group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                  src={item.src}
+                  alt={item.alt}
+                  width={400}
+                  height={300}
+                  className="object-cover transform-gpu will-change-transform scale-100 group-hover:scale-110 transition-transform duration-500 ease-in-out"
                 />
-              </figure>
+              </div>
               <div className="card-body p-5">
-                <h3 className="card-title text-lg font-semibold">Enchanting Vistas</h3>
-                <p className="text-sm text-base-content/60">A glimpse into the serene and captivating atmosphere of our resort.</p>
+                <h3 className="card-title text-lg font-semibold">{item.title}</h3>
+                <p className="text-sm text-base-content/60">{item.description}</p>
               </div>
             </div>
           ))}
