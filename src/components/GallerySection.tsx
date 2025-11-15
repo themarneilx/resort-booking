@@ -15,13 +15,14 @@ export default function GallerySection() {
         onEnter: (batch) =>
           gsap.fromTo(
             batch as gsap.TweenTarget,
-            { opacity: 0, y: 30 },
+            { opacity: 0, y: 40, scale: 0.95 },
             {
               opacity: 1,
               y: 0,
-              duration: 0.5,
-              ease: "power2.out",
-              stagger: { each: 0.08 },
+              scale: 1,
+              duration: 0.6,
+              ease: "power3.out",
+              stagger: { each: 0.1 },
             }
           ),
         once: true,
@@ -30,31 +31,30 @@ export default function GallerySection() {
     return () => ctx.revert();
   }, []);
 
-  const items = Array.from({ length: 9 }, (_, i) => i);
+  const items = Array.from({ length: 6 }, (_, i) => i);
 
   return (
-    <section ref={containerRef} id="gallery" className="w-full min-h-screen py-24 bg-[#f6f5f1]">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-center mb-12">Resort Gallery</h2>
+    <section ref={containerRef} id="gallery" className="w-full py-20 sm:py-28 bg-base-200/50">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Scenes from Paradise</h2>
+            <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">Explore the stunning beauty and luxurious corners of our exclusive resort.</p>
+        </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((i) => (
-            <div key={i} className="gallery-card card transform-gpu will-change-transform bg-base-100 border border-base-200 shadow-xl hover:shadow-2xl transition-all duration-300 group">
-              <figure className="overflow-hidden rounded-t-2xl">
+            <div key={i} className="gallery-card card bg-base-100 shadow-lg overflow-hidden group transform-gpu will-change-transform">
+              <figure className="aspect-w-4 aspect-h-3">
                 <img
                   src={i % 2 === 0 ? "/frontpage.jpg" : "/beach1.jpg"}
-                  alt={`Resort ${i + 1}`}
+                  alt={`Resort view ${i + 1}`}
                   loading="lazy"
                   decoding="async"
-                  fetchPriority="low"
-                  className="h-64 w-full object-cover transform-gpu will-change-transform scale-105 group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover transform-gpu will-change-transform scale-100 group-hover:scale-110 transition-transform duration-500 ease-in-out"
                 />
               </figure>
-              <div className="card-body">
-                <h3 className="card-title">Picture {i + 1}</h3>
-                <p className="text-sm opacity-80">[Text]</p>
-                <div className="card-actions justify-end">
-                  <button className="btn btn-primary btn-sm">View</button>
-                </div>
+              <div className="card-body p-5">
+                <h3 className="card-title text-lg font-semibold">Enchanting Vistas</h3>
+                <p className="text-sm text-base-content/60">A glimpse into the serene and captivating atmosphere of our resort.</p>
               </div>
             </div>
           ))}
