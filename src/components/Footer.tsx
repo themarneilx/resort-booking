@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto py-12 px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-1">
-            <h2 className="text-2xl font-bold">Paradise Resorts</h2>
+            <h2 className="text-2xl font-bold">Brisa Solei</h2>
             <p className="mt-2 text-sm text-base-content/70">Your personal slice of heaven.</p>
             <div className="flex gap-4 mt-4">
               <a href="#" className="hover:text-primary transition-colors"><Twitter size={20} /></a>
@@ -27,9 +27,9 @@ export default function Footer() {
             <h3 className="font-semibold tracking-wider uppercase">Contact Us</h3>
             <div className="flex flex-col gap-2 mt-4 text-sm">
               <p>123 Luxury Lane</p>
-              <p>Paradise Island, 10101</p>
-              <p>support@paradiseresorts.example</p>
-              <p>+1 (234) 567-890</p>
+              <p>Medellin, Cebu</p>
+              <p>support@brisasolei.com</p>
+              <p>+63 991 123 4567</p>
             </div>
           </div>
           <div>
@@ -44,7 +44,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="border-t border-base-content/10 mt-8 pt-6 text-center text-sm">
-          <p>&copy; 2025 Paradise Resorts. All rights reserved.</p>
+          <p>&copy; 2025 Brisa Solei. All rights reserved.</p>
         </div>
       </div>
     </footer>

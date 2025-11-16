@@ -109,7 +109,7 @@ useEffect(() => {
       {/* Discover Section */}
       <section ref={discoverRef} id="discover" className="py-20 sm:py-28 px-6">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Discover Our Paradise</h2>
+          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Discover Brisa Solei</h2>
           <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">From pristine beaches to world-class amenities, every moment is crafted for your delight.</p>
           <div className="grid md:grid-cols-3 gap-8 mt-12 text-left">
             <div className="card bg-base-100 shadow-lg">
