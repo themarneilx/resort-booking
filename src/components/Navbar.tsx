@@ -33,7 +33,7 @@ export default function Navbar() {
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
-        <Link href="/" className="btn btn-ghost text-xl normal-case">🌴 Paradise</Link>
+        <Link href="/" className="btn btn-ghost text-xl normal-case">Brisa Solei</Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
