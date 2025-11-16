@@ -71,7 +71,7 @@ useEffect(() => {
             Experience unparalleled luxury and tranquility. Book your dream escape today.
           </p>
         </header>
-        <div id="booking" ref={formRef} className="w-full max-w-md mx-auto relative z-10 -mt-8">
+        <div id="booking" ref={formRef} className="w-full max-w-md mx-auto relative z-10 -mt-8 px-4 sm:px-0">
           <div className="card bg-base-100/80 backdrop-blur-md border border-base-300 shadow-2xl p-6 sm:p-8 rounded-2xl">
             <form className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 items-end justify-center" onSubmit={(e) => e.preventDefault()}>
               <div className="flex flex-col gap-2">
