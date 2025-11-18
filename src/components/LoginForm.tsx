@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
-import { User, Eye, EyeOff, LogIn, ArrowLeft } from "lucide-react";
+import { Eye, EyeOff, LogIn, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 
 const images = ["/beach1.jpg", "/frontpage.jpg"];
@@ -73,7 +73,9 @@ const LoginForm = () => {
         {images.map((src, index) => (
           <div
             key={src}
-            ref={(el) => (imageRefs.current[index] = el)}
+            ref={(el) => {
+              imageRefs.current[index] = el;
+            }}
             className="absolute inset-0 w-full h-full"
             style={{ opacity: index === 0 ? 1 : 0 }}
           >
