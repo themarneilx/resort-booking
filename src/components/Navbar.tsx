@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from "next/link";
 
-export default function Navbar() {
+export default function Navbar({ animateAndNavigate }: { animateAndNavigate: (href: string) => void }) {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -44,6 +44,7 @@ export default function Navbar() {
         </ul>
       </div>
       <div className="navbar-end">
+        <button onClick={() => animateAndNavigate('/login')} className="btn btn-ghost rounded-full px-6">Login</button>
         <a href="#booking" className="btn btn-primary rounded-full px-6">Book Now</a>
       </div>
     </div>

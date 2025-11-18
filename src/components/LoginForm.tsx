@@ -1,152 +1,196 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { gsap } from "gsap";
 import { User, Eye, EyeOff, LogIn, ArrowLeft } from "lucide-react";
+import Image from "next/image";
 
-// 1. Define the interface for the component's props
-interface SocialIconProps {
-  icon: React.ReactNode; // or string
-  label: string;
-}
-
-// 2. Apply the interface to the component's props
-const SocialIcon = ({ icon, label }: SocialIconProps) => (
-  <button className="btn btn-ghost w-full justify-center text-sm gap-2 h-12 min-h-12 border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-150 shadow-sm font-semibold">
-    <span className="text-lg font-bold">
-      {/* Simple representation of Google (G) and Apple () logos */}
-      {icon}
-    </span>
-    {label}
-  </button>
-);
+const images = ["/beach1.jpg", "/frontpage.jpg"];
 
 const LoginForm = () => {
-  // ... rest of your code ...
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [currentImage, setCurrentImage] = useState(0);
+  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Using an Unsplash URL as a placeholder image for the visual style.
-  const placeholderImageUrl = "https://images.unsplash.com/photo-1571501679680-de33f6a27698?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1950&q=80";
+  const handleBack = () => {
+    gsap.to(containerRef.current, {
+      x: "100%",
+      duration: 0.5,
+      ease: "power3.inOut",
+      onComplete: () => {
+        router.push("/");
+      },
+    });
+  };
+
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    gsap.to(containerRef.current, {
+      x: "-100%",
+      duration: 0.5,
+      ease: "power3.inOut",
+      onComplete: () => {
+        console.log("Login animation complete");
+      },
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const nextImage = (currentImage + 1) % images.length;
+      
+      gsap.to(imageRefs.current[currentImage], {
+        opacity: 0,
+        duration: 1.5,
+        ease: "power2.inOut",
+      });
+      
+      gsap.fromTo(
+        imageRefs.current[nextImage],
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 1.5,
+          ease: "power2.inOut",
+          onStart: () => {
+            setCurrentImage(nextImage);
+          },
+        }
+      );
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [currentImage]);
 
   return (
-    <div className="min-h-screen flex antialiased">
+    <div ref={containerRef} className="min-h-screen flex antialiased bg-base-100">
       
-      {/* 1. Left Column (Visual/Marketing) - Dark Blue/Teal background */}
-      <div
-        className="hidden lg:flex w-full lg:w-2/5 xl:w-1/2 bg-cover bg-center rounded-r-[40px] shadow-2xl relative overflow-hidden"
-        // Blend a dark background color with the image using a gradient overlay
-        style={{ 
-          backgroundImage: `linear-gradient(to bottom, rgba(30, 41, 59, 0.7), rgba(13, 22, 38, 0.7)), url(${placeholderImageUrl})`,
-          minHeight: '100vh',
-          backgroundSize: 'cover'
-        }}
-      >
-        {/* Content - Logo, Tagline, and Back Button */}
-        <div className="relative p-10 flex flex-col justify-between text-white">
-          
-          {/* Top: Logo and Branding - HEADER REMOVED */}
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center border-2 border-white">
-              <span className="text-xl font-serif font-extrabold">H</span>
-            </div>
-            <h2 className="text-2xl font-bold font-sans">Home Away</h2>
+      {/* 1. Left Column (Image Slideshow) */}
+      <div className="hidden lg:flex w-full lg:w-1/2 relative overflow-hidden">
+        {images.map((src, index) => (
+          <div
+            key={src}
+            ref={(el) => (imageRefs.current[index] = el)}
+            className="absolute inset-0 w-full h-full"
+            style={{ opacity: index === 0 ? 1 : 0 }}
+          >
+            <Image
+              src={src}
+              alt="Resort image"
+              layout="fill"
+              objectFit="cover"
+              priority={index === 0}
+            />
+            <div className="absolute inset-0 bg-black/40" />
           </div>
-
-          {/* Center/Bottom: Tagline and Back Button */}
-          <div className="space-y-12 mb-10">
-            {/* Back Arrow Button */}
-            <button className="btn btn-circle bg-teal-600 border-teal-600 hover:bg-teal-700 hover:border-teal-700 shadow-lg text-white">
+        ))}
+        
+        <div className="relative p-10 flex flex-col justify-between text-white z-10">
+          <div>
+            <button
+              onClick={handleBack}
+              className="btn btn-circle bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 text-white shadow-lg"
+            >
               <ArrowLeft size={24} />
             </button>
-
-            {/* Tagline */}
-            <h3 className="text-4xl font-light leading-snug tracking-wide">
-              Away from Home, <br /> Yet Feels Like Home
-            </h3>
+          </div>
+          <div className="text-left">
+            <h2 className="text-5xl font-extrabold tracking-tight drop-shadow-lg">Find Your Bliss</h2>
+            <p className="mt-4 text-lg text-white/80 drop-shadow-md max-w-md">
+              Step into a world of luxury and serenity. Your perfect getaway is just a click away.
+            </p>
           </div>
         </div>
       </div>
 
-      {/* 2. Right Column (Login Form) - Light background with rounded card */}
-      <div className="w-full lg:w-3/5 xl:w-1/2 flex items-center justify-center p-8 bg-gray-100 min-h-screen">
-        <div className="w-full max-w-md p-8 lg:p-12 bg-white rounded-2xl shadow-xl">
+      {/* 2. Right Column (Login Form) */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative">
+        <button
+          onClick={handleBack}
+          className="btn btn-circle bg-base-200/50 backdrop-blur-sm border-base-300/50 hover:bg-base-300/50 lg:hidden absolute top-8 left-8"
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <div className="w-full max-w-md">
           
-          {/* Header */}
           <div className="text-center mb-10">
-            <User className="mx-auto w-12 h-12 text-gray-400" />
-            <h1 className="text-3xl font-light text-gray-800 mt-3">
-              Sign In
+            <h1 className="text-4xl font-bold tracking-tight text-base-content">
+              Welcome Back
             </h1>
-            <p className="text-sm text-gray-500">
-              as a User
+            <p className="text-base-content/60 mt-2">
+              Sign in to manage your bookings.
             </p>
           </div>
 
-          {/* Login Form Inputs */}
-          <div className="space-y-6">
-            
-            {/* Email Input */}
+          <form className="space-y-4">
             <div className="form-control">
+              <label className="label">
+                <span className="label-text">Email</span>
+              </label>
               <input
                 type="email"
-                placeholder="Email address"
-                className="input input-lg bg-gray-100 border-none h-14 text-gray-700 placeholder-gray-500 text-base rounded-lg"
+                placeholder="you@example.com"
+                className="input input-bordered w-full"
               />
             </div>
             
-            {/* Password Input */}
-            <div className="form-control relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className="input input-lg bg-gray-100 border-none h-14 text-gray-700 placeholder-gray-500 text-base pr-12 rounded-lg"
-              />
-              <button
-                type="button"
-                className="absolute right-0 top-0 h-14 w-12 flex items-center justify-center text-gray-500 hover:text-gray-700"
-                onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Password</span>
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="••••••••"
+                  className="input input-bordered w-full pr-12"
+                />
+                <button
+                  type="button"
+                  className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-base-content/50"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
 
-            {/* Forgot Password Link */}
-            <div className="flex justify-end text-sm">
-              <a
-                href="#"
-                className="text-teal-600 hover:text-teal-700 link-hover"
-              >
+            <div className="flex justify-between items-center text-sm mt-2">
+              <div className="form-control">
+                <label className="label cursor-pointer gap-2">
+                  <input type="checkbox" className="checkbox checkbox-primary" />
+                  <span className="label-text">Remember me</span>
+                </label>
+              </div>
+              <a href="#" className="link link-primary">
                 Forgot password?
               </a>
             </div>
 
-            {/* Login Button */}
-            <div className="form-control pt-2">
-              <button className="btn btn-lg h-14 bg-teal-600 border-teal-600 hover:bg-teal-700 hover:border-teal-700 text-white text-base shadow-lg transition duration-200 rounded-lg">
+            <div className="form-control pt-4">
+              <button
+                onClick={handleLogin}
+                className="btn btn-primary w-full"
+              >
                 <LogIn size={20} />
-                LOGIN
+                Sign In
               </button>
             </div>
-          </div>
+          </form>
 
-          {/* Social Sign In - Fixed to be side-by-side with borders */}
-          <div className="divider text-gray-400 mt-8 mb-6">Or continue with</div>
+          <div className="divider text-base-content/40 my-8">Or</div>
           
           <div className="flex gap-4">
-            {/* Using a fixed width of 1/2 for each button to keep them equal size */}
-            <div className="w-1/2">
-                <SocialIcon icon="G" label="Google" />
-            </div>
-            <div className="w-1/2">
-                <SocialIcon icon="" label="Apple" />
-            </div>
+            <button className="btn btn-outline w-1/2">Google</button>
+            <button className="btn btn-outline w-1/2">Apple</button>
           </div>
 
-          {/* Sign Up Link */}
-          <div className="text-center mt-10 text-gray-600">
+          <div className="text-center mt-8 text-sm text-base-content/60">
             Don&apos;t have an account?{" "}
-            <a href="#" className="link text-teal-600 font-medium hover:text-teal-700">
-              Sign up
+            <a href="#" className="link link-primary">
+              Sign Up
             </a>
           </div>
         </div>
