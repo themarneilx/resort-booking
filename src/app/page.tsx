@@ -154,7 +154,7 @@ useEffect(() => {
       <section id="contact" className="py-20 sm:py-28 px-6 bg-base-100">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Contact Us</h2>
-          <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">We're here to help. Reach out to us for any inquiries or special requests.</p>
+          <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">We&apos;re here to help. Reach out to us for any inquiries or special requests.</p>
           <div className="mt-12">
             <a href="mailto:contact@brisasolei.com" className="btn btn-primary btn-lg rounded-full px-8">
               Get in Touch
