@@ -13,8 +13,11 @@ export default function LayoutClient({
   const router = useRouter();
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
+  const isDashboard = pathname?.startsWith("/dashboard");
   const mainRef = useRef<HTMLDivElement>(null);
+  const hideLayout = isLoginPage || isDashboard;
   const isInitialRender = useRef(true);
+
 
   const animateAndNavigate = (href: string) => {
     gsap.to(mainRef.current, {
