@@ -14,13 +14,15 @@ export default function LayoutClient({
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
   const isDashboard = pathname?.startsWith("/dashboard");
-  const hideLayout = isLoginPage || isDashboard;
   const mainRef = useRef<HTMLDivElement>(null);
+  const hideLayout = isLoginPage || isDashboard;
+  const isInitialRender = useRef(true);
+
 
   const animateAndNavigate = (href: string) => {
     gsap.to(mainRef.current, {
-      x: "-100%",
-      duration: 0.5,
+      x: "-100%", // Always exit to the left
+      duration: 0.3,
       ease: "power3.inOut",
       onComplete: () => {
         router.push(href);
@@ -29,26 +31,25 @@ export default function LayoutClient({
   };
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      if (isDashboard) {
-        gsap.set(mainRef.current, { x: "0%" });
-      } else {
-        gsap.fromTo(
-          mainRef.current,
-          { x: "100%" },
-          { x: "0%", duration: 0.5, ease: "power3.inOut" }
-        );
-      }
-    });
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Determine entry direction based on the destination path
+    const entryX = pathname === '/login' ? '100%' : '-100%';
 
-    return () => ctx.revert();
-  }, [pathname, isDashboard]);
+    gsap.fromTo(
+      mainRef.current,
+      { x: entryX },
+      { x: "0%", duration: 0.3, ease: "power3.inOut" }
+    );
+  }, [pathname]);
 
   return (
     <>
-      {!hideLayout && <Navbar animateAndNavigate={animateAndNavigate} />}
+      {!isLoginPage && <Navbar animateAndNavigate={animateAndNavigate} />}
       <main ref={mainRef}>{children}</main>
-      {!hideLayout && <Footer />}
+      <Footer />
     </>
   );
 }
