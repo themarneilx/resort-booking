@@ -47,7 +47,7 @@ export default function LayoutClient({
 
   return (
     <>
-      {!isLoginPage && <Navbar animateAndNavigate={animateAndNavigate} />}
+      {!hideLayout && <Navbar animateAndNavigate={animateAndNavigate} />}
       <main ref={mainRef}>{children}</main>
       <Footer />
     </>
