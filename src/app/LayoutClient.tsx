@@ -14,11 +14,12 @@ export default function LayoutClient({
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
   const mainRef = useRef<HTMLDivElement>(null);
+  const isInitialRender = useRef(true);
 
   const animateAndNavigate = (href: string) => {
     gsap.to(mainRef.current, {
-      x: "-100%",
-      duration: 0.5,
+      x: "-100%", // Always exit to the left
+      duration: 0.3,
       ease: "power3.inOut",
       onComplete: () => {
         router.push(href);
@@ -27,10 +28,17 @@ export default function LayoutClient({
   };
 
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Determine entry direction based on the destination path
+    const entryX = pathname === '/login' ? '100%' : '-100%';
+
     gsap.fromTo(
       mainRef.current,
-      { x: "100%" },
-      { x: "0%", duration: 0.5, ease: "power3.inOut" }
+      { x: entryX },
+      { x: "0%", duration: 0.3, ease: "power3.inOut" }
     );
   }, [pathname]);
 

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 
-export default function Navbar({ animateAndNavigate }: { animateAndNavigate: (href: string) => void }) {
+export default function Navbar(props: { animateAndNavigate: (href: string) => void }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
@@ -12,15 +12,20 @@ export default function Navbar({ animateAndNavigate }: { animateAndNavigate: (hr
       setIsScrolled(window.scrollY > 10);
 
       const sections = ['discover', 'rooms', 'gallery', 'contact'];
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      let currentSection = '';
 
       for (const sectionId of sections) {
         const section = document.getElementById(sectionId);
-        if (section && scrollPosition >= section.offsetTop && scrollPosition < section.offsetTop + section.offsetHeight) {
-          setActiveSection(sectionId);
-          break;
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          // Check if the section is vertically centered in the viewport
+          if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+            currentSection = sectionId;
+            break;
+          }
         }
       }
+      setActiveSection(currentSection);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -63,7 +68,7 @@ export default function Navbar({ animateAndNavigate }: { animateAndNavigate: (hr
         </ul>
       </div>
       <div className="navbar-end">
-        <button onClick={() => animateAndNavigate('/login')} className="btn btn-ghost rounded-full px-6" aria-label="Login">Login</button>
+        <button onClick={() => props.animateAndNavigate('/login')} className="btn btn-ghost rounded-full px-6" aria-label="Login">Login</button>
         <a href="#booking" className="btn btn-primary rounded-full px-6" aria-label="Book Now">Book Now</a>
       </div>
     </div>

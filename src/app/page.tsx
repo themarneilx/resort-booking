@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Calendar, Users, BedDouble, Search } from 'lucide-react';
+import { Calendar, Users } from 'lucide-react';
 
 import GallerySection from "@/components/GallerySection";
 import VideoBackground from "@/components/VideoBackground";
@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const heroRef = useRef<HTMLHeadingElement>(null);
+  const paraRef = useRef<HTMLParagraphElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const mainContainerRef = useRef<HTMLDivElement>(null);
   const discoverRef = useRef<HTMLElement>(null);
@@ -20,9 +21,11 @@ export default function Home() {
 
 useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero intro animation
-      gsap.from(heroRef.current, { y: 60, opacity: 0, scale: 0.85, duration: 1.2, ease: "power3.out" });
-      gsap.from(formRef.current, { y: 40, opacity: 0, duration: 1, delay: 0.4, ease: "power2.out" });
+      // Hero intro animation timeline
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.from(heroRef.current, { y: 60, opacity: 0, scale: 0.85, duration: 1.2 })
+        .from(paraRef.current, { y: 30, opacity: 0, duration: 1 }, "-=0.9")
+        .from(formRef.current, { y: 40, opacity: 0, duration: 1 }, "-=0.7");
 
       // Parallax video background
       gsap.to(videoRef.current, {
@@ -68,40 +71,41 @@ useEffect(() => {
           <h1 ref={heroRef} className="text-6xl sm:text-8xl font-extrabold tracking-tighter text-white drop-shadow-2xl">
             Your Oasis Awaits
           </h1>
-          <p className="mt-6 mb-12 text-lg sm:text-xl text-white/95 drop-shadow-lg max-w-3xl mx-auto">
+          <p ref={paraRef} className="mt-6 mb-12 text-lg sm:text-xl text-white/95 drop-shadow-lg max-w-3xl mx-auto">
             Experience unparalleled luxury and tranquility. Book your dream escape today.
           </p>
         </header>
-        <div id="booking" ref={formRef} className="w-full max-w-md mx-auto relative z-10 -mt-8 px-4 sm:px-0">
-          <div className="card bg-base-100/80 backdrop-blur-md border border-base-300 shadow-2xl p-6 sm:p-8 rounded-2xl">
-            <form className="grid gap-4 sm:grid-cols-2 md:grid-cols-2 items-end justify-center" onSubmit={(e) => e.preventDefault()}>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium flex items-center gap-2"><Calendar size={16} /> Check-in</label>
-                <input type="date" className="input input-bordered w-full" />
+        <div id="booking" ref={formRef} className="w-full max-w-5xl mx-auto relative z-10 mt-8 px-4 sm:px-0">
+          <div className="card bg-base-100/70 backdrop-blur-xl border border-base-300 shadow-2xl p-4 rounded-2xl">
+            <form className="flex flex-col lg:flex-row items-center gap-4" onSubmit={(e) => e.preventDefault()}>
+              
+              <div className="w-full lg:w-1/4 flex items-center gap-3 bg-base-200/50 p-3 rounded-lg">
+                <Calendar size={24} className="text-primary" />
+                <div className="flex flex-col">
+                  <label className="text-xs font-bold">Check-in</label>
+                  <input type="text" placeholder="Add date" className="bg-transparent outline-none w-full" />
+                </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium flex items-center gap-2"><Calendar size={16} /> Check-out</label>
-                <input type="date" className="input input-bordered w-full" />
+
+              <div className="w-full lg:w-1/4 flex items-center gap-3 bg-base-200/50 p-3 rounded-lg">
+                <Calendar size={24} className="text-primary" />
+                <div className="flex flex-col">
+                  <label className="text-xs font-bold">Check-out</label>
+                  <input type="text" placeholder="Add date" className="bg-transparent outline-none w-full" />
+                </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium flex items-center gap-2"><Users size={16} /> Guests</label>
-                <input type="number" min={1} defaultValue={2} className="input input-bordered w-full" />
+
+              <div className="w-full lg:w-1/2 flex items-center gap-3 bg-base-200/50 p-3 rounded-lg">
+                <Users size={24} className="text-primary" />
+                <div className="flex flex-col">
+                  <label className="text-xs font-bold">Guests & Rooms</label>
+                  <input type="text" placeholder="2 guests, 1 room" className="bg-transparent outline-none w-full" />
+                </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium flex items-center gap-2"><BedDouble size={16} /> Room Type</label>
-                <select className="select select-bordered w-full pl-3"> {/* Added pl-3 here */}
-                  <option>Deluxe Suite</option>
-                  <option>Ocean View</option>
-                  <option>Garden Bungalow</option>
-                  <option>Presidential Suite</option>
-                </select>
-              </div>
-              <div className="flex col-span-full justify-center"> {/* Added col-span-full and justify-center here */}
-                <button className="btn btn-primary btn-lg w-full sm:w-auto rounded-lg flex items-center gap-2">
-                  <Search size={20} />
-                  Search
-                </button>
-              </div>
+              
+              <button className="btn btn-primary btn-lg w-full lg:w-auto rounded-xl flex-grow">
+                Search
+              </button>
             </form>
           </div>
         </div>
