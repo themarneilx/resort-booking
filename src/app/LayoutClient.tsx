@@ -13,6 +13,8 @@ export default function LayoutClient({
   const router = useRouter();
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
+  const isDashboard = pathname?.startsWith("/dashboard");
+  const hideLayout = isLoginPage || isDashboard;
   const mainRef = useRef<HTMLDivElement>(null);
 
   const animateAndNavigate = (href: string) => {
@@ -27,18 +29,26 @@ export default function LayoutClient({
   };
 
   useEffect(() => {
-    gsap.fromTo(
-      mainRef.current,
-      { x: "100%" },
-      { x: "0%", duration: 0.5, ease: "power3.inOut" }
-    );
-  }, [pathname]);
+    const ctx = gsap.context(() => {
+      if (isDashboard) {
+        gsap.set(mainRef.current, { x: "0%" });
+      } else {
+        gsap.fromTo(
+          mainRef.current,
+          { x: "100%" },
+          { x: "0%", duration: 0.5, ease: "power3.inOut" }
+        );
+      }
+    });
+
+    return () => ctx.revert();
+  }, [pathname, isDashboard]);
 
   return (
     <>
-      {!isLoginPage && <Navbar animateAndNavigate={animateAndNavigate} />}
+      {!hideLayout && <Navbar animateAndNavigate={animateAndNavigate} />}
       <main ref={mainRef}>{children}</main>
-      <Footer />
+      {!hideLayout && <Footer />}
     </>
   );
 }
