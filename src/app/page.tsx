@@ -6,7 +6,7 @@ import { Calendar, Users } from 'lucide-react';
 
 import GallerySection from "@/components/GallerySection";
 import VideoBackground from "@/components/VideoBackground";
-import Footer from "@/components/Footer";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -167,7 +167,7 @@ useEffect(() => {
         </div>
       </section>
 
-      <Footer />
+
     </div>
   );
 }
