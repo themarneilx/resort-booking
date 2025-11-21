@@ -20,7 +20,7 @@ const LoginForm = () => {
   const handleBack = () => {
     gsap.to(containerRef.current, {
       x: "100%",
-      duration: 0.5,
+      duration: 0.3,
       ease: "power3.inOut",
       onComplete: () => {
         router.push("/");
