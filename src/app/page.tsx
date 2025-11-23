@@ -2,8 +2,8 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Calendar, Users } from 'lucide-react';
-import { Button, Tooltip, Flex } from 'antd';
+import { Calendar } from 'lucide-react';
+import { Button, Flex, DatePicker } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
 import GallerySection from "@/components/GallerySection";
@@ -64,7 +64,7 @@ useEffect(() => {
   return (
     <div ref={mainContainerRef} className="min-h-screen w-full text-base-content">
       {/* Hero Section */}
-      <section className="relative w-full h-[110vh] overflow-hidden flex flex-col items-center pt-20 md:pt-32 lg:pt-64 bg-black">
+      <section className="relative w-full h-[110vh] overflow-hidden flex flex-col items-center pt-20 md:pt-28 lg:pt-52 bg-black">
         <div ref={videoRef} aria-hidden className="absolute top-0 left-0 w-full h-[120%] z-0">
           <VideoBackground />
           <div className="absolute inset-0 bg-black/50"></div>
@@ -77,30 +77,45 @@ useEffect(() => {
             Experience unparalleled luxury and tranquility. Book your dream escape today.
           </p>
         </header>
-        <div id="booking" ref={formRef} className="w-full max-w-fit mx-auto relative z-10 mt-12 md:mt-32 lg:mt-64 px-6 sm:px-0">
+        {/* Booking Section */}
+        <div id="booking" ref={formRef} className="w-full max-w-md lg:max-w-fit mx-auto relative z-10 mt-12 md:mt-32 lg:mt-64 px-6 sm:px-0">
           <div className="card bg-base-100/50 backdrop-blur-xl border border-base-300 shadow-2xl p-3 rounded-xl">
             <form className="flex flex-col lg:flex-row items-center gap-3" onSubmit={(e) => e.preventDefault()}>
-              
-              <div className="w-full lg:w-60 flex items-center gap-2 bg-base-200/50 p-2.5 rounded-lg">
-                <Calendar size={20} className="text-blue-500" />
-                <div className="flex flex-col">
-                  <label className="text-[10px] font-bold uppercase tracking-wider opacity-70">Check-in</label>
-                  <input type="text" placeholder="Add date" className="bg-transparent outline-none w-full text-sm" />
+              {/* check-in secion */}
+              <div className="w-full lg:w-40 flex items-center gap-2 bg-base-200/50 p-2.5 rounded-lg">
+                <Calendar size={28} className="text-blue-500" />
+                <div className="flex flex-col w-full">
+                  <label className="text-[12px] font-bold uppercase tracking-wider opacity-70">Check-in</label>
+                  <DatePicker 
+                    variant="borderless" 
+                    placeholder="Add date" 
+                    suffixIcon={null}
+                    className="w-full p-0 bg-transparent text-base"
+                    style={{ background: 'transparent' }}
+                    placement="bottomLeft"
+                  />
                 </div>
               </div>
-
-              <div className="w-full lg:w-60 flex items-center gap-2 bg-base-200/50 p-2.5 rounded-lg">
-                <Calendar size={20} className="text-blue-500" />
-                <div className="flex flex-col">
-                  <label className="text-[10px] font-bold uppercase tracking-wider opacity-70">Check-out</label>
-                  <input type="text" placeholder="Add date" className="bg-transparent outline-none w-full text-sm" />
+              {/* check-out section */}
+              <div className="w-full lg:w-40 flex items-center gap-2 bg-base-200/50 p-2.5 rounded-lg">
+                <Calendar size={28} className="text-blue-500" />
+                <div className="flex flex-col w-full">
+                  <label className="text-[12px] font-bold uppercase tracking-wider opacity-70">Check-out</label>
+                  <DatePicker 
+                    variant="borderless" 
+                    placeholder="Add date" 
+                    suffixIcon={null}
+                    className="w-full p-0 bg-transparent text-base"
+                    style={{ background: 'transparent' }}
+                    placement="bottomLeft"
+                  />
                 </div>
               </div>
-              
+              {/* Search Button */}
               <div className="w-full lg:w-auto flex justify-center">
                 <Flex gap="small" vertical>
                   <Flex wrap gap="small">
-                      <Button type="primary" size="large" icon={<SearchOutlined />}>
+                      <Button type="primary" size="large" icon={<SearchOutlined />} className="text-[18px]">
                          Search
                       </Button>                  
                    </Flex>

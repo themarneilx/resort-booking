@@ -23,6 +23,7 @@ html {
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --spacing-35: 8.75rem;
 }
 
 @layer components {

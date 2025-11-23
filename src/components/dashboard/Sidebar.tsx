@@ -6,7 +6,6 @@ import {
   Users, 
   Settings, 
   LogOut,
-  FileText,
   CreditCard
 } from 'lucide-react';
 
