@@ -64,7 +64,7 @@ useEffect(() => {
   return (
     <div ref={mainContainerRef} className="min-h-screen w-full text-base-content">
       {/* Hero Section */}
-      <section className="relative w-full h-[110vh] overflow-hidden flex flex-col items-center pt-32 md:pt-64 lg:pt-96 bg-black">
+      <section className="relative w-full h-[110vh] overflow-hidden flex flex-col items-center pt-20 md:pt-32 lg:pt-64 bg-black">
         <div ref={videoRef} aria-hidden className="absolute top-0 left-0 w-full h-[120%] z-0">
           <VideoBackground />
           <div className="absolute inset-0 bg-black/50"></div>
