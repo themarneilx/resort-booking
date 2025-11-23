@@ -1,6 +1,5 @@
 import React from 'react';
-import Sidebar from '../../components/dashboard/Sidebar';
-import { Menu } from 'lucide-react';
+import { Sidebar } from '@/components/dashboard';
 
 export default function DashboardLayout({
   children,

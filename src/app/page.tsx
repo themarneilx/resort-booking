@@ -3,6 +3,8 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Calendar, Users } from 'lucide-react';
+import { Button, Tooltip, Flex } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 
 import GallerySection from "@/components/GallerySection";
 import VideoBackground from "@/components/VideoBackground";
@@ -60,14 +62,14 @@ useEffect(() => {
   }, []);
 
   return (
-    <div ref={mainContainerRef} className="min-h-screen w-full bg-base-200 text-base-content">
+    <div ref={mainContainerRef} className="min-h-screen w-full text-base-content">
       {/* Hero Section */}
-      <section className="relative w-full h-[110vh] overflow-hidden flex flex-col justify-center items-center">
-        <div ref={videoRef} aria-hidden className="absolute inset-0 z-0">
+      <section className="relative w-full h-[110vh] overflow-hidden flex flex-col items-center pt-32 md:pt-64 lg:pt-96 bg-black">
+        <div ref={videoRef} aria-hidden className="absolute top-0 left-0 w-full h-[120%] z-0">
           <VideoBackground />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
-        <header className="relative z-10 text-center max-w-5xl mx-auto px-6">
+        <header className="relative z-10 text-center max-w-5xl mx-auto px-6 pt-20">
           <h1 ref={heroRef} className="text-6xl sm:text-8xl font-extrabold tracking-tighter text-white drop-shadow-2xl">
             Your Oasis Awaits
           </h1>
@@ -75,44 +77,42 @@ useEffect(() => {
             Experience unparalleled luxury and tranquility. Book your dream escape today.
           </p>
         </header>
-        <div id="booking" ref={formRef} className="w-full max-w-5xl mx-auto relative z-10 mt-8 px-4 sm:px-0">
-          <div className="card bg-base-100/70 backdrop-blur-xl border border-base-300 shadow-2xl p-4 rounded-2xl">
-            <form className="flex flex-col lg:flex-row items-center gap-4" onSubmit={(e) => e.preventDefault()}>
+        <div id="booking" ref={formRef} className="w-full max-w-fit mx-auto relative z-10 mt-12 md:mt-32 lg:mt-64 px-6 sm:px-0">
+          <div className="card bg-base-100/50 backdrop-blur-xl border border-base-300 shadow-2xl p-3 rounded-xl">
+            <form className="flex flex-col lg:flex-row items-center gap-3" onSubmit={(e) => e.preventDefault()}>
               
-              <div className="w-full lg:w-1/4 flex items-center gap-3 bg-base-200/50 p-3 rounded-lg">
-                <Calendar size={24} className="text-primary" />
+              <div className="w-full lg:w-60 flex items-center gap-2 bg-base-200/50 p-2.5 rounded-lg">
+                <Calendar size={20} className="text-blue-500" />
                 <div className="flex flex-col">
-                  <label className="text-xs font-bold">Check-in</label>
-                  <input type="text" placeholder="Add date" className="bg-transparent outline-none w-full" />
+                  <label className="text-[10px] font-bold uppercase tracking-wider opacity-70">Check-in</label>
+                  <input type="text" placeholder="Add date" className="bg-transparent outline-none w-full text-sm" />
                 </div>
               </div>
 
-              <div className="w-full lg:w-1/4 flex items-center gap-3 bg-base-200/50 p-3 rounded-lg">
-                <Calendar size={24} className="text-primary" />
+              <div className="w-full lg:w-60 flex items-center gap-2 bg-base-200/50 p-2.5 rounded-lg">
+                <Calendar size={20} className="text-blue-500" />
                 <div className="flex flex-col">
-                  <label className="text-xs font-bold">Check-out</label>
-                  <input type="text" placeholder="Add date" className="bg-transparent outline-none w-full" />
-                </div>
-              </div>
-
-              <div className="w-full lg:w-1/2 flex items-center gap-3 bg-base-200/50 p-3 rounded-lg">
-                <Users size={24} className="text-primary" />
-                <div className="flex flex-col">
-                  <label className="text-xs font-bold">Guests & Rooms</label>
-                  <input type="text" placeholder="2 guests, 1 room" className="bg-transparent outline-none w-full" />
+                  <label className="text-[10px] font-bold uppercase tracking-wider opacity-70">Check-out</label>
+                  <input type="text" placeholder="Add date" className="bg-transparent outline-none w-full text-sm" />
                 </div>
               </div>
               
-              <button className="btn btn-primary btn-lg w-full lg:w-auto rounded-xl flex-grow">
-                Search
-              </button>
+              <div className="w-full lg:w-auto flex justify-center">
+                <Flex gap="small" vertical>
+                  <Flex wrap gap="small">
+                      <Button type="primary" size="large" icon={<SearchOutlined />}>
+                         Search
+                      </Button>                  
+                   </Flex>
+                </Flex>
+              </div>
             </form>
           </div>
         </div>
       </section>
 
       {/* Discover Section */}
-      <section ref={discoverRef} id="discover" className="py-20 sm:py-28 px-6">
+      <section ref={discoverRef} id="discover" className="py-20 sm:py-28 px-6 bg-base-200">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Discover Brisa Solei</h2>
           <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">From pristine beaches to world-class amenities, every moment is crafted for your delight.</p>
@@ -160,7 +160,7 @@ useEffect(() => {
           <h2 className="text-4xl sm:text-5xl font-bold tracking-tight">Contact Us</h2>
           <p className="mt-4 text-lg text-base-content/70 max-w-2xl mx-auto">We&apos;re here to help. Reach out to us for any inquiries or special requests.</p>
           <div className="mt-12">
-            <a href="mailto:contact@brisasolei.com" className="btn btn-primary btn-lg rounded-full px-8">
+            <a href="mailto:contact@brisasolei.com" className="btn-brand inline-block !text-white">
               Get in Touch
             </a>
           </div>

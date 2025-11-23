@@ -1,12 +1,12 @@
 import React from 'react';
-import DashboardStats from '../../components/dashboard/DashboardStats';
+import { DashboardStats } from '@/components/dashboard';
 
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-        <button className="btn btn-primary">New Booking</button>
+        <button className="btn-brand">New Booking</button>
       </div>
 
       {/* Stats Section */}

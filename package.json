@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
+    "antd": "^6.0.0",
     "daisyui": "^5.4.7",
     "gsap": "^3.13.0",
     "lucide-react": "^0.553.0",

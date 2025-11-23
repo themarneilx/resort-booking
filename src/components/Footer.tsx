@@ -38,7 +38,7 @@ export default function Footer() {
             <div className="form-control mt-2">
               <div className="join">
                 <input type="email" placeholder="Enter your email" className="input input-bordered join-item w-full" />
-                <button className="btn btn-primary join-item">Subscribe</button>
+                <button className="btn-brand join-item rounded-l-none shadow-none !py-2 !px-4 !text-sm">Subscribe</button>
               </div>
             </div>
           </div>

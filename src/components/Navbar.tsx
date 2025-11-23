@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from "next/link";
 import Image from "next/image";
 
-export default function Navbar(props: { animateAndNavigate: (href: string) => void }) {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
 
@@ -43,9 +43,20 @@ export default function Navbar(props: { animateAndNavigate: (href: string) => vo
   return (
     <div className={navClass}>
       <div className="navbar-start">
-        <div className="dropdown">
+        <div className="dropdown hidden">
           <label tabIndex={0} className="btn btn-ghost lg:hidden" aria-label="Open menu">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              className="h-5 w-5" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              width="20"
+              height="20"
+              style={{ width: '20px', height: '20px' }}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
           </label>
           <ul tabIndex={0} className={`menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 ${isScrolled ? '' : 'text-base-content'}`}>
             <li><a href="#discover" className={linkClass('discover')}>Discover</a></li>
@@ -68,8 +79,10 @@ export default function Navbar(props: { animateAndNavigate: (href: string) => vo
         </ul>
       </div>
       <div className="navbar-end">
-        <button onClick={() => props.animateAndNavigate('/login')} className="btn btn-ghost rounded-full px-6" aria-label="Login">Login</button>
-        <a href="#booking" className="btn btn-primary rounded-full px-6" aria-label="Book Now">Book Now</a>
+        <Link href="/login" className="btn btn-ghost rounded-full px-3 sm:px-6 text-sm" aria-label="Login">
+          Login
+        </Link>
+        <a href="#booking" className={`btn-brand !py-1.5 !px-3 !text-xs sm:!py-2 sm:!px-4 sm:!text-sm ${isScrolled ? '!text-white' : ''}`} aria-label="Book Now">Book Now</a>
       </div>
     </div>
   );

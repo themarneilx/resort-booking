@@ -3,6 +3,12 @@
   themes: light --default;
 }
 
+/* Override DaisyUI primary color to Blue (matching blue-600) */
+:root, [data-theme="light"] {
+    --primary: 54.6% 0.245 262.88; /* oklch for blue-600 */
+    --p: 54.6% 0.245 262.88; /* fallback/alias if needed */
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -19,6 +25,12 @@ html {
   --font-mono: var(--font-geist-mono);
 }
 
+@layer components {
+  .btn-brand {
+    @apply bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2.5 sm:py-3.5 px-4 sm:px-6 rounded-xl transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-blue-200 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none border-none cursor-pointer flex items-center justify-center;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -27,7 +39,7 @@ html {
 }
 
 body {
-  background-color: #f6f5f1; /* dirty white */
+  background-color: #f6f5f1; /* prevents white flash on load */
   color: #111111;
   font-family: Arial, Helvetica, sans-serif;
 }
