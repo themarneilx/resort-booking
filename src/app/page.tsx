@@ -93,6 +93,7 @@ useEffect(() => {
                     className="w-full p-0 bg-transparent text-base"
                     style={{ background: 'transparent' }}
                     placement="bottomLeft"
+                    inputReadOnly
                   />
                 </div>
               </div>
@@ -108,6 +109,7 @@ useEffect(() => {
                     className="w-full p-0 bg-transparent text-base"
                     style={{ background: 'transparent' }}
                     placement="bottomLeft"
+                    inputReadOnly
                   />
                 </div>
               </div>
