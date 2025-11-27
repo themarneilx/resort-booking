@@ -1,198 +1,144 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { gsap } from "gsap";
-import { Eye, EyeOff, LogIn, ArrowLeft } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
+import { 
+  PiArrowLeft, 
+  PiSun, 
+  PiEye, 
+  PiArrowRight, 
+  PiAppleLogoFill 
+} from "react-icons/pi";
 
-import { FaApple } from "react-icons/fa";
-
-const images = ["/beach1.jpg", "/frontpage.jpg"];
-
-const LoginForm = () => {
+export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [currentImage, setCurrentImage] = useState(0);
-  const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const handleBack = () => {
-    router.push("/");
-  };
-
-  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Login clicked");
     router.push("/dashboard");
   };
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const nextImage = (currentImage + 1) % images.length;
-      
-      gsap.to(imageRefs.current[currentImage], {
-        opacity: 0,
-        duration: 1.5,
-        ease: "power2.inOut",
-      });
-      
-      gsap.fromTo(
-        imageRefs.current[nextImage],
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 1.5,
-          ease: "power2.inOut",
-          onStart: () => {
-            setCurrentImage(nextImage);
-          },
-        }
-      );
-    }, 5000); // Change image every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [currentImage]);
-
   return (
-    <div ref={containerRef} className="min-h-screen flex antialiased bg-base-100">
-      
-      {/* 1. Left Column (Image Slideshow) */}
-      <div className="hidden lg:flex w-full lg:w-1/2 relative overflow-hidden">
-        {images.map((src, index) => (
-          <div
-            key={src}
-            ref={(el) => {
-              imageRefs.current[index] = el;
-            }}
-            className="absolute inset-0 w-full h-full"
-            style={{ opacity: index === 0 ? 1 : 0 }}
-          >
-            <Image
-              src={src}
-              alt="Resort image"
-              layout="fill"
-              objectFit="cover"
-              priority={index === 0}
-            />
-            <div className="absolute inset-0 bg-black/40" />
-          </div>
-        ))}
+    <div className="h-screen w-full bg-sand-50 overflow-hidden flex text-slate-800 font-sans">
+      {/* Left Side: Image & Branding */}
+      <div className="hidden lg:flex w-1/2 relative bg-slate-900 transition-all duration-700 ease-in-out">
+        <div className="absolute inset-0 bg-black/30 z-10"></div>
+        <img 
+          src="https://images.unsplash.com/photo-1540541338287-41700207dee6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700" 
+          alt="Resort"
+        />
         
-        <div className="relative p-10 flex flex-col justify-between text-white z-10">
-          <div>
-            <button
-              onClick={handleBack}
-              className="btn btn-circle bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20 text-white shadow-lg"
-            >
-              <ArrowLeft size={24} />
-            </button>
-          </div>
-          <div className="text-left">
-            <h2 className="text-5xl font-extrabold tracking-tight drop-shadow-lg">Find Your Bliss</h2>
-            <p className="mt-4 text-lg text-white/80 drop-shadow-md max-w-md">
-              Step into a world of luxury and serenity. Your perfect getaway is just a click away.
-            </p>
-          </div>
+        {/* Back Button */}
+        <Link href="/" className="absolute top-8 left-8 z-20 w-10 h-10 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/30 transition-colors">
+            <PiArrowLeft className="text-xl" />
+        </Link>
+
+        {/* Text Content */}
+        <div className="relative z-20 mt-auto p-16 w-full max-w-2xl">
+            <h1 className="text-5xl font-serif font-bold text-white mb-6 leading-tight fade-in">Find Your Bliss</h1>
+            <p className="text-lg text-white/90 font-light fade-in">Step into a world of luxury and serenity. Your perfect getaway is just a click away.</p>
+            
+            {/* Logo Mark at bottom */}
+            <div className="mt-12 flex items-center gap-3 opacity-80">
+                <div className="w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center text-white font-bold">
+                    <PiSun />
+                </div>
+                <span className="text-xl font-serif font-bold text-white tracking-wide">Brisa Solei</span>
+            </div>
         </div>
       </div>
 
-      {/* 2. Right Column (Login Form) */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 relative">
-        <button
-          onClick={handleBack}
-          className="btn btn-circle bg-base-200/50 backdrop-blur-sm border-base-300/50 hover:bg-base-300/50 lg:hidden absolute top-8 left-8"
-        >
-          <ArrowLeft size={24} />
-        </button>
-        <div className="w-full max-w-md">
-          
-          <div className="text-center mb-10">
-            <h1 className="text-4xl font-bold tracking-tight text-base-content">
-              Welcome Back
-            </h1>
-            <p className="text-base-content/60 mt-2">
-              Sign in to manage your bookings.
-            </p>
-          </div>
+      {/* Right Side: Forms */}
+      <div className="w-full lg:w-1/2 h-full flex items-center justify-center bg-white overflow-y-auto relative">
+        {/* Mobile Back Button */}
+        <Link href="/" className="lg:hidden absolute top-6 left-6 w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors">
+            <PiArrowLeft className="text-xl" />
+        </Link>
 
-          <form className="space-y-4">
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Email</span>
-              </label>
-              <input
-                type="email"
-                placeholder="you@example.com"
-                className="input input-bordered w-full"
-              />
-            </div>
+        <div className="w-full max-w-md px-8 py-12">
             
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Password</span>
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  className="input input-bordered w-full pr-12"
-                />
-                <button
-                  type="button"
-                  className="absolute right-0 top-0 h-full w-12 flex items-center justify-center text-base-content/50"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
-              </div>
+            {/* LOGIN FORM */}
+            <div className="fade-in">
+                <div className="text-center mb-10">
+                    <h2 className="text-3xl font-bold text-slate-900 mb-2">Welcome Back</h2>
+                    <p className="text-slate-500">Sign in to manage your bookings.</p>
+                </div>
+
+                <form className="space-y-5" onSubmit={handleLogin}>
+                    {/* Email */}
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                        <input 
+                          type="email" 
+                          placeholder="you@example.com" 
+                          className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 transition-all outline-none text-slate-800 placeholder:text-slate-400"
+                        />
+                    </div>
+
+                    {/* Password */}
+                    <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                        <div className="relative">
+                            <input 
+                              type={showPassword ? "text" : "password"} 
+                              placeholder="••••••••" 
+                              className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 transition-all outline-none text-slate-800 placeholder:text-slate-400"
+                            />
+                            <button 
+                              type="button" 
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                            >
+                                <PiEye className="text-xl" />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center justify-between text-sm">
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                            <input type="checkbox" className="w-4 h-4 rounded border-slate-300 text-brand-500 focus:ring-brand-500" />
+                            <span className="text-slate-600 group-hover:text-slate-800 transition-colors">Remember me</span>
+                        </label>
+                        <a href="#" className="text-brand-600 font-medium hover:text-brand-700 hover:underline">Forgot password?</a>
+                    </div>
+
+                    {/* Submit */}
+                    <button type="submit" className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 rounded-lg shadow-lg hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-2 group">
+                        <span>Sign In</span>
+                        <PiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                    </button>
+                </form>
+
+                {/* Divider */}
+                <div className="relative my-8">
+                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200"></div></div>
+                    <div className="relative flex justify-center text-sm"><span className="px-4 bg-white text-slate-400">Or continue with</span></div>
+                </div>
+
+                {/* Socials */}
+                <div className="grid grid-cols-2 gap-4">
+                    <button type="button" className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors font-medium text-slate-700">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" className="w-5 h-5" alt="Google" />
+                        <span>Google</span>
+                    </button>
+                    <button type="button" className="flex items-center justify-center gap-2 px-4 py-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors font-medium text-slate-700">
+                        <PiAppleLogoFill className="text-xl" />
+                        <span>Apple</span>
+                    </button>
+                </div>
+
+                <p className="text-center mt-8 text-slate-600 text-sm">
+                    Don&apos;t have an account?{" "}
+                    <Link href="/signup" className="text-brand-600 font-bold hover:underline">Sign Up</Link>
+                </p>
             </div>
-
-            <div className="flex justify-between items-center text-sm mt-2">
-              <div className="form-control">
-                <label className="label cursor-pointer gap-2">
-                  <input type="checkbox" className="checkbox checkbox-primary" />
-                  <span className="label-text">Remember me</span>
-                </label>
-              </div>
-              <a href="#" className="link link-primary">
-                Forgot password?
-              </a>
-            </div>
-
-            <div className="form-control pt-4">
-              <button
-                onClick={handleLogin}
-                className="btn-brand w-full"
-              >
-                <LogIn size={20} className="mr-2" />
-                Sign In
-              </button>
-            </div>
-          </form>
-
-          <div className="divider text-base-content/40 my-8">Or</div>
-          
-          <div className="flex gap-4">
-            <button className="btn btn-outline w-1/2">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="fill-current"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/><path d="M1 1h22v22H1z" fill="none"/></svg>
-            </button>
-            <button className="btn btn-outline w-1/2">
-              <FaApple size={24} />
-            </button>
-          </div>
-
-          <div className="text-center mt-8 text-sm text-base-content/60">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-blue-600 underline hover:text-blue-700">
-              Sign Up
-            </Link>
-          </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default LoginForm;
+}

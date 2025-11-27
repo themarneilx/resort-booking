@@ -1,21 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import LayoutClient from "./LayoutClient";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Brisa Solei",
-  description: "world class resort",
+  title: "Brisa Solei | Luxury Resort & Spa",
+  description: "Experience unparalleled luxury and tranquility where the ocean meets the sky.",
 };
 
 export default function RootLayout({
@@ -24,9 +26,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="light">
+    <html lang="en" data-theme="light" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-neutral-900`}
+        className={`${inter.variable} ${playfair.variable} antialiased bg-sand-50 text-slate-800 selection:bg-brand-500 selection:text-white`}
       >
         <LayoutClient>{children}</LayoutClient>
       </body>
