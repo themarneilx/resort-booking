@@ -57,7 +57,7 @@ export default function AdminLayoutClient({
                     Guests
                 </Link>
 
-                <Link href="#" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors font-medium">
+                <Link href="/rooms" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/5 transition-colors font-medium">
                     <PiBed className="text-lg" />
                     Rooms
                 </Link>
