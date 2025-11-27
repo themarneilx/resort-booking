@@ -36,7 +36,7 @@ Designed to deliver a beautiful, responsive, and smooth user experience for gues
 
 | Layer | Technology |
 |-------|------------|
-| **Framework** | Next.js 15 (App Router) |
+| **Framework** | Next.js 16 (App Router) |
 | **Database** | PostgreSQL |
 | **ORM** | Drizzle ORM |
 | **Auth** | JWT (jose) + bcryptjs |

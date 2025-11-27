@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { 
   PiCalendarBlank, 
   PiUsers, 
@@ -155,9 +156,9 @@ export default function Home() {
                 Elegant rooms, suites, and villas designed for ultimate comfort. Wake up to the sound of the ocean.
               </p>
             </div>
-            <a href="#" className="text-brand-600 font-semibold hover:text-brand-700 flex items-center gap-2 group">
+            <Link href="/rooms" className="text-brand-600 font-semibold hover:text-brand-700 flex items-center gap-2 group">
               View All Rooms <PiArrowRight className="group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
           </div>
 
           {/* Rooms Grid */}
