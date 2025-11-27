@@ -10,7 +10,7 @@ export default function LayoutClient({
 }>) {
   const pathname = usePathname();
   const isAuthPage = pathname === "/login" || pathname === "/signup";
-  const isDashboard = pathname?.startsWith("/dashboard");
+  const isDashboard = pathname?.startsWith("/dashboard") || pathname?.startsWith("/manage") || pathname?.startsWith("/admin");
   const hideLayout = isAuthPage || isDashboard;
 
   return (

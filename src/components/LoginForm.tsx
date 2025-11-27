@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import axios from "axios";
+import { setAccessToken } from "@/lib/axios";
 import { 
   PiArrowLeft, 
   PiSun, 
@@ -13,12 +15,44 @@ import {
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Heuristic mapping based on placeholder/type or if names were present
+    const { type, placeholder, value } = e.target;
+    if (type === "email") setFormData(prev => ({ ...prev, email: value }));
+    else if (type === "password" || (type === "text" && placeholder === "••••••••")) setFormData(prev => ({ ...prev, password: value }));
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login clicked");
-    router.push("/dashboard");
+    setError(null);
+    setLoading(true);
+
+    try {
+        const res = await axios.post("/api/auth/login", {
+            email: formData.email,
+            password: formData.password
+        });
+
+        if (res.data.success) {
+            setAccessToken(res.data.accessToken);
+            // Optional: Save user info to context if needed
+            if (res.data.user.role === "ADMIN") {
+                router.push("/admin/dashboard");
+            } else {
+                router.push("/manage");
+            }
+        }
+    } catch (err: any) {
+        setError(err.response?.data?.message || "Login failed");
+    } finally {
+        setLoading(false);
+    }
   };
 
   return (
@@ -68,14 +102,23 @@ export default function LoginForm() {
                     <p className="text-slate-500">Sign in to manage your bookings.</p>
                 </div>
 
+                {error && (
+                    <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+                        {typeof error === 'string' ? error : JSON.stringify(error)}
+                    </div>
+                )}
+
                 <form className="space-y-5" onSubmit={handleLogin}>
                     {/* Email */}
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
                         <input 
                           type="email" 
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
                           placeholder="you@example.com" 
                           className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 transition-all outline-none text-slate-800 placeholder:text-slate-400"
+                          required
                         />
                     </div>
 
@@ -85,8 +128,11 @@ export default function LoginForm() {
                         <div className="relative">
                             <input 
                               type={showPassword ? "text" : "password"} 
+                              value={formData.password}
+                              onChange={(e) => setFormData({...formData, password: e.target.value})}
                               placeholder="••••••••" 
                               className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 transition-all outline-none text-slate-800 placeholder:text-slate-400"
+                              required
                             />
                             <button 
                               type="button" 
@@ -108,9 +154,13 @@ export default function LoginForm() {
                     </div>
 
                     {/* Submit */}
-                    <button type="submit" className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 rounded-lg shadow-lg hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-2 group">
-                        <span>Sign In</span>
-                        <PiArrowRight className="group-hover:translate-x-1 transition-transform" />
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 rounded-lg shadow-lg hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        {loading ? "Signing In..." : "Sign In"}
+                        {!loading && <PiArrowRight className="group-hover:translate-x-1 transition-transform" />}
                     </button>
                 </form>
 

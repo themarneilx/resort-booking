@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings | Brisa Solei</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9', // Ocean Blue
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        sand: {
+                            50: '#fdfbf7',
+                            100: '#f7f3e8',
+                            200: '#efe6d0',
+                            900: '#4a4334',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities from Reference */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .fade-up {
+            animation: fadeUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Status Badge Colors */
+        .status-confirmed { background-color: #d1fae5; color: #065f46; }
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-cancelled { background-color: #fee2e2; color: #991b1b; }
+        .status-completed { background-color: #f1f5f9; color: #475569; }
+
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        #mobile-menu.hidden-menu {
+            transform: translateX(100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        #mobile-menu.visible-menu {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body class="bg-sand-50 text-slate-800 antialiased selection:bg-brand-500 selection:text-white flex flex-col min-h-screen">
+
+    <!-- Navigation (Solid Background for Dashboard) -->
+    <nav class="sticky top-0 w-full z-50 bg-slate-900 py-4 shadow-md">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 group flex-shrink-0">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-amber-400 flex items-center justify-center text-white font-bold text-lg">
+                    <i class="ph ph-sun"></i>
+                </div>
+                <span class="text-2xl font-serif font-bold text-white tracking-wide group-hover:text-brand-100 transition-colors">Brisa Solei</span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors">Home</a>
+                <a href="#" class="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors">Rooms</a>
+                <a href="#" class="text-white/80 hover:text-white text-sm font-medium tracking-wide transition-colors">Dining</a>
+            </div>
+
+            <!-- Profile Action -->
+            <div class="hidden md:flex items-center gap-4">
+                <div class="flex items-center gap-3 pl-6 border-l border-white/10">
+                    <div class="text-right hidden lg:block">
+                        <p class="text-white text-xs font-bold uppercase tracking-wider">Marneil C.</p>
+                        <p class="text-brand-400 text-[10px]">Gold Member</p>
+                    </div>
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-9 h-9 rounded-full border-2 border-brand-500" alt="Profile">
+                </div>
+            </div>
+
+             <!-- Mobile Menu Button -->
+             <button onclick="toggleMenu()" class="md:hidden text-white text-2xl flex-shrink-0 focus:outline-none">
+                <i class="ph ph-list"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-slate-900 hidden-menu flex flex-col">
+        <div class="flex justify-between items-center p-6 border-b border-white/10">
+            <a href="#" class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-amber-400 flex items-center justify-center text-white font-bold text-lg">
+                    <i class="ph ph-sun"></i>
+                </div>
+                <span class="text-2xl font-serif font-bold text-white tracking-wide">Brisa Solei</span>
+            </a>
+            <button onclick="toggleMenu()" class="text-white text-2xl focus:outline-none hover:text-brand-400 transition-colors">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+        <div class="flex-1 flex flex-col items-center justify-center space-y-8 p-6">
+            <a href="index.html" class="text-2xl font-serif text-white">Home</a>
+            <a href="#" class="text-2xl font-serif text-brand-400">My Bookings</a>
+            <a href="#" class="text-2xl font-serif text-white">Profile</a>
+            <a href="#" class="text-lg text-white/50">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <main class="flex-grow pt-10 pb-20 px-4 md:px-6">
+        <div class="max-w-7xl mx-auto">
+            
+            <!-- Header Section -->
+            <div class="mb-10 fade-up">
+                <h1 class="text-3xl md:text-4xl font-serif font-bold text-slate-900">Welcome back, Marneil</h1>
+                <p class="text-slate-500 mt-2">Manage your stays and explore your upcoming paradise.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-8">
+                
+                <!-- Sidebar Navigation -->
+                <div class="lg:col-span-3 fade-up" style="animation-delay: 0.1s;">
+                    <div class="glass-panel rounded-2xl p-6 sticky top-24">
+                        <ul class="space-y-2">
+                            <li>
+                                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand-50 text-brand-700 font-bold border border-brand-100 transition-all">
+                                    <i class="ph ph-suitcase-rolling text-xl"></i>
+                                    My Bookings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-white hover:shadow-sm transition-all">
+                                    <i class="ph ph-user text-xl"></i>
+                                    Profile Details
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-white hover:shadow-sm transition-all">
+                                    <i class="ph ph-credit-card text-xl"></i>
+                                    Payment Methods
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-white hover:shadow-sm transition-all">
+                                    <i class="ph ph-gear text-xl"></i>
+                                    Settings
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="mt-8 pt-6 border-t border-slate-200">
+                            <button class="flex items-center gap-3 px-4 py-2 text-red-500 hover:text-red-600 font-medium transition-colors w-full">
+                                <i class="ph ph-sign-out text-xl"></i>
+                                Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bookings Content -->
+                <div class="lg:col-span-9 fade-up" style="animation-delay: 0.2s;">
+                    
+                    <!-- Tabs -->
+                    <div class="flex gap-6 mb-6 border-b border-slate-200 pb-1 overflow-x-auto">
+                        <button onclick="switchTab('upcoming')" id="tab-upcoming" class="text-brand-600 border-b-2 border-brand-500 pb-3 font-bold text-sm uppercase tracking-wider whitespace-nowrap transition-colors">
+                            Upcoming Stays
+                        </button>
+                        <button onclick="switchTab('history')" id="tab-history" class="text-slate-400 hover:text-slate-600 border-b-2 border-transparent hover:border-slate-300 pb-3 font-bold text-sm uppercase tracking-wider whitespace-nowrap transition-colors">
+                            Booking History
+                        </button>
+                        <button onclick="switchTab('cancelled')" id="tab-cancelled" class="text-slate-400 hover:text-slate-600 border-b-2 border-transparent hover:border-slate-300 pb-3 font-bold text-sm uppercase tracking-wider whitespace-nowrap transition-colors">
+                            Cancelled
+                        </button>
+                    </div>
+
+                    <!-- Upcoming List Container -->
+                    <div id="content-upcoming" class="space-y-6">
+                        
+                        <!-- Booking Card 1 (Confirmed) -->
+                        <div class="glass-panel rounded-2xl p-4 md:p-6 transition-all hover:shadow-lg group">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <!-- Image -->
+                                <div class="w-full md:w-64 h-48 md:h-auto shrink-0 rounded-xl overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Room" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute top-3 left-3">
+                                        <span class="status-confirmed px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm flex items-center gap-1">
+                                            <i class="ph-fill ph-check-circle"></i> Confirmed
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Details -->
+                                <div class="flex-1 flex flex-col">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h3 class="text-xl font-serif font-bold text-slate-900">Ocean Front Villa</h3>
+                                            <p class="text-slate-500 text-sm">Booking ID: #BS-88291</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-2xl font-serif font-bold text-brand-600">₱75,000</p>
+                                            <p class="text-xs text-slate-400">Total Price</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Date Grid -->
+                                    <div class="grid grid-cols-2 gap-4 my-4 bg-sand-100/50 p-4 rounded-lg border border-sand-200">
+                                        <div>
+                                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Check-in</p>
+                                            <p class="text-slate-800 font-semibold flex items-center gap-2">
+                                                <i class="ph ph-calendar-check text-brand-500"></i> Nov 15, 2025
+                                            </p>
+                                            <p class="text-xs text-slate-500 pl-6">After 2:00 PM</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Check-out</p>
+                                            <p class="text-slate-800 font-semibold flex items-center gap-2">
+                                                <i class="ph ph-calendar-x text-brand-500"></i> Nov 18, 2025
+                                            </p>
+                                            <p class="text-xs text-slate-500 pl-6">Before 12:00 PM</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="mt-auto flex flex-col md:flex-row gap-3 pt-2">
+                                        <button class="flex-1 bg-brand-500 hover:bg-brand-600 text-white py-2.5 rounded-lg font-medium transition-colors text-sm shadow-md hover:shadow-brand-500/20">
+                                            Manage Booking
+                                        </button>
+                                        <button class="px-6 py-2.5 border border-slate-200 hover:border-slate-300 text-slate-600 hover:bg-white rounded-lg font-medium transition-all text-sm">
+                                            Contact Support
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Booking Card 2 (Pending) -->
+                        <div class="glass-panel rounded-2xl p-4 md:p-6 transition-all hover:shadow-lg group opacity-90">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <!-- Image -->
+                                <div class="w-full md:w-64 h-48 md:h-auto shrink-0 rounded-xl overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1590490360182-f33efe80a713?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Room" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                    <div class="absolute top-3 left-3">
+                                        <span class="status-pending px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm flex items-center gap-1">
+                                            <i class="ph-fill ph-clock"></i> Pending
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Details -->
+                                <div class="flex-1 flex flex-col">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <h3 class="text-xl font-serif font-bold text-slate-900">Tropical Garden Suite</h3>
+                                            <p class="text-slate-500 text-sm">Booking ID: #BS-99102</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-2xl font-serif font-bold text-slate-600">₱18,000</p>
+                                            <p class="text-xs text-slate-400">Awaiting Payment</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="my-4">
+                                        <p class="text-slate-600 text-sm mb-2">
+                                            <i class="ph ph-calendar text-brand-500 mr-1"></i> Dec 20 - Dec 21, 2025
+                                        </p>
+                                        <p class="text-sm bg-orange-50 text-orange-800 p-3 rounded-lg border border-orange-100 flex items-start gap-2">
+                                            <i class="ph-fill ph-warning-circle text-lg mt-0.5"></i>
+                                            To secure this reservation, please complete payment within 24 hours.
+                                        </p>
+                                    </div>
+
+                                    <!-- Actions -->
+                                    <div class="mt-auto flex flex-col md:flex-row gap-3 pt-2">
+                                        <button class="flex-1 bg-slate-900 hover:bg-slate-800 text-white py-2.5 rounded-lg font-medium transition-colors text-sm shadow-md">
+                                            Complete Payment
+                                        </button>
+                                        <button class="px-4 py-2.5 text-red-500 hover:bg-red-50 rounded-lg font-medium transition-all text-sm">
+                                            Cancel Request
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div> <!-- End Upcoming -->
+
+                    <!-- History List Container (Hidden by default) -->
+                    <div id="content-history" class="hidden space-y-6">
+                         <!-- Booking Card (Completed) -->
+                         <div class="glass-panel rounded-2xl p-4 md:p-6 opacity-75 hover:opacity-100 transition-opacity">
+                            <div class="flex flex-col md:flex-row gap-6">
+                                <div class="w-full md:w-48 h-32 shrink-0 rounded-xl overflow-hidden relative grayscale group-hover:grayscale-0 transition-all">
+                                    <img src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Room" class="w-full h-full object-cover">
+                                    <div class="absolute top-2 left-2">
+                                        <span class="status-completed px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm">
+                                            Completed
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex justify-between mb-1">
+                                        <h3 class="text-lg font-serif font-bold text-slate-700">Seaview Deluxe</h3>
+                                        <span class="text-slate-500 font-medium">₱31,000</span>
+                                    </div>
+                                    <p class="text-slate-500 text-sm mb-3">Oct 12 - Oct 14, 2024</p>
+                                    <div class="flex gap-3">
+                                        <button class="text-sm text-brand-600 font-bold hover:underline">Book Again</button>
+                                        <button class="text-sm text-slate-500 hover:text-slate-800">View Invoice</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cancelled List Container (Hidden by default) -->
+                    <div id="content-cancelled" class="hidden space-y-6">
+                        <div class="text-center py-12 bg-white/50 rounded-2xl border border-dashed border-slate-300">
+                            <i class="ph ph-receipt-x text-4xl text-slate-300 mb-2"></i>
+                            <p class="text-slate-500">No cancelled bookings found.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-10 px-6 border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <p class="text-white font-serif font-bold text-lg mb-1">Brisa Solei</p>
+                <p class="text-xs text-slate-500">&copy; 2025. All rights reserved.</p>
+            </div>
+            <div class="flex gap-6 text-sm">
+                <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-white transition-colors">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple Tab Switcher Logic
+        function switchTab(tabName) {
+            // Hide all content
+            ['upcoming', 'history', 'cancelled'].forEach(t => {
+                document.getElementById('content-' + t).classList.add('hidden');
+                
+                // Reset tab styles
+                const btn = document.getElementById('tab-' + t);
+                btn.classList.remove('text-brand-600', 'border-brand-500');
+                btn.classList.add('text-slate-400', 'border-transparent');
+            });
+
+            // Show selected content
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+
+            // Activate tab style
+            const activeBtn = document.getElementById('tab-' + tabName);
+            activeBtn.classList.remove('text-slate-400', 'border-transparent');
+            activeBtn.classList.add('text-brand-600', 'border-brand-500');
+        }
+
+        // Mobile Menu Logic (Same as Landing Page)
+        const mobileMenu = document.getElementById('mobile-menu');
+        function toggleMenu() {
+            if (mobileMenu.classList.contains('hidden-menu')) {
+                mobileMenu.classList.remove('hidden-menu');
+                mobileMenu.classList.add('visible-menu');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileMenu.classList.remove('visible-menu');
+                mobileMenu.classList.add('hidden-menu');
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
+</body>
+</html>

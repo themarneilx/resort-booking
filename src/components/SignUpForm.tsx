@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import axios from "axios";
 import { 
   PiArrowLeft, 
   PiSun, 
@@ -14,12 +15,51 @@ import {
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
+
   const router = useRouter();
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.type === "text" && e.target.placeholder === "John Doe" ? "name" : e.target.type === "email" ? "email" : e.target.placeholder === "••••••••" && !showConfirmPassword ? "password" : "confirmPassword" ]: e.target.value });
+    // Note: The above logic is brittle due to generic inputs. Better to add 'name' attribute to inputs.
+  };
+  
+  // Better approach: update inputs to have 'name' and 'value' props.
+
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("SignUp clicked");
-    router.push("/dashboard");
+    setError(null);
+    
+    if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
+        return;
+    }
+
+    setLoading(true);
+
+    try {
+        const res = await axios.post("/api/auth/register", {
+            name: formData.name,
+            email: formData.email,
+            password: formData.password
+        });
+
+        if (res.data.success) {
+            router.push("/login");
+        }
+    } catch (err: any) {
+        setError(err.response?.data?.message || "Registration failed");
+    } finally {
+        setLoading(false);
+    }
   };
 
   return (
@@ -69,14 +109,24 @@ export default function SignUpForm() {
                     <p className="text-slate-500">Sign up to unlock exclusive offers.</p>
                 </div>
 
+                {error && (
+                    <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+                        {typeof error === 'string' ? error : JSON.stringify(error)}
+                    </div>
+                )}
+
                 <form className="space-y-4" onSubmit={handleSignUp}>
                     {/* Name */}
                     <div>
                         <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
                         <input 
                           type="text" 
+                          name="name"
+                          value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
                           placeholder="John Doe" 
                           className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 transition-all outline-none text-slate-800 placeholder:text-slate-400"
+                          required
                         />
                     </div>
 
@@ -85,8 +135,12 @@ export default function SignUpForm() {
                         <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
                         <input 
                           type="email" 
+                          name="email"
+                          value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
                           placeholder="you@example.com" 
                           className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 transition-all outline-none text-slate-800 placeholder:text-slate-400"
+                          required
                         />
                     </div>
 
@@ -96,8 +150,12 @@ export default function SignUpForm() {
                         <div className="relative">
                             <input 
                               type={showPassword ? "text" : "password"} 
+                              name="password"
+                              value={formData.password}
+                              onChange={(e) => setFormData({...formData, password: e.target.value})}
                               placeholder="••••••••" 
                               className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 transition-all outline-none text-slate-800 placeholder:text-slate-400"
+                              required
                             />
                             <button 
                               type="button" 
@@ -115,8 +173,12 @@ export default function SignUpForm() {
                         <div className="relative">
                             <input 
                               type={showConfirmPassword ? "text" : "password"} 
+                              name="confirmPassword"
+                              value={formData.confirmPassword}
+                              onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                               placeholder="••••••••" 
                               className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-brand-500 focus:bg-white focus:ring-4 focus:ring-brand-500/10 transition-all outline-none text-slate-800 placeholder:text-slate-400"
+                              required
                             />
                              <button 
                               type="button" 
@@ -129,9 +191,13 @@ export default function SignUpForm() {
                     </div>
 
                     {/* Submit */}
-                    <button type="submit" className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 rounded-lg shadow-lg hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-2 group mt-2">
-                        <span>Sign Up</span>
-                        <PiUserPlus className="group-hover:scale-110 transition-transform" />
+                    <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3.5 rounded-lg shadow-lg hover:shadow-brand-500/30 transition-all flex items-center justify-center gap-2 group mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                        {loading ? "Signing Up..." : "Sign Up"}
+                        {!loading && <PiUserPlus className="group-hover:scale-110 transition-transform" />}
                     </button>
                 </form>
 
