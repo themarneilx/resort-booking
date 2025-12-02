@@ -32,22 +32,27 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
   const refreshToken = cookieStore.get("refresh_token")?.value;
-  let userName: string | null = null;
+  let user: { id: string; name: string | null; email: string; role: string } | null = null;
 
   if (refreshToken) {
     const payload = await verifyRefreshToken(refreshToken);
     if (payload) {
-        try {
-            const user = await db.query.users.findFirst({
-                where: eq(users.id, payload.userId),
-                columns: { name: true, email: true }
-            });
-            if (user) {
-                userName = user.name || user.email.split("@")[0];
-            }
-        } catch (error) {
-            console.error("Failed to fetch user in RootLayout", error);
+      try {
+        const dbUser = await db.query.users.findFirst({
+          where: eq(users.id, payload.userId),
+          columns: { id: true, name: true, email: true, role: true }
+        });
+        if (dbUser) {
+          user = {
+            id: dbUser.id,
+            name: dbUser.name,
+            email: dbUser.email,
+            role: dbUser.role
+          };
         }
+      } catch (error) {
+        console.error("Failed to fetch user in RootLayout", error);
+      }
     }
   }
 
@@ -56,7 +61,7 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} ${playfair.variable} antialiased bg-sand-50 text-slate-800 selection:bg-brand-500 selection:text-white`}
       >
-        <LayoutClient userName={userName}>{children}</LayoutClient>
+        <LayoutClient user={user}>{children}</LayoutClient>
       </body>
     </html>
   );

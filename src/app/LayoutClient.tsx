@@ -2,24 +2,32 @@
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AuthProvider } from "@/contexts/AuthContext";
+
+interface User {
+  id: string;
+  name: string | null;
+  email: string;
+  role: string;
+}
 
 export default function LayoutClient({
   children,
-  userName,
+  user,
 }: Readonly<{
   children: React.ReactNode;
-  userName: string | null;
+  user: User | null;
 }>) {
   const pathname = usePathname();
   const isAuthPage = pathname === "/login" || pathname === "/signup";
-  const isDashboard = pathname?.startsWith("/dashboard") || pathname?.startsWith("/manage") || pathname?.startsWith("/admin") || pathname?.startsWith("/rooms");
+  const isDashboard = pathname?.startsWith("/dashboard") || pathname?.startsWith("/manage") || pathname?.startsWith("/admin");
   const hideLayout = isAuthPage || isDashboard;
 
   return (
-    <>
-      {!hideLayout && <Navbar userName={userName} />}
+    <AuthProvider initialUser={user}>
+      {!hideLayout && <Navbar />}
       <main>{children}</main>
       {!hideLayout && <Footer />}
-    </>
+    </AuthProvider>
   );
 }
