@@ -16,11 +16,19 @@ import {
   PiBell 
 } from "react-icons/pi";
 
+interface AdminLayoutClientProps {
+  children: React.ReactNode;
+  user: {
+    name: string | null;
+    email: string;
+    role: string;
+  };
+}
+
 export default function AdminLayoutClient({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  user,
+}: AdminLayoutClientProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
@@ -33,7 +41,7 @@ export default function AdminLayoutClient({
                     <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-500 to-amber-400 flex items-center justify-center text-white font-bold">
                         <PiSun />
                     </div>
-                    <span className="text-xl font-serif font-bold tracking-wide">Brisa Admin</span>
+                    <span className="text-lg font-serif font-bold tracking-wide truncate">{'Brisa'} | Admin</span>
                 </div>
             </div>
 
@@ -80,9 +88,9 @@ export default function AdminLayoutClient({
             <div className="p-4 border-t border-white/10 bg-slate-800/50">
                 <div className="flex items-center gap-3">
                     <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Admin" className="w-10 h-10 rounded-full border-2 border-brand-500" />
-                    <div>
-                        <p className="text-sm font-bold text-white">Elena R.</p>
-                        <p className="text-xs text-slate-400">Resort Manager</p>
+                    <div className="overflow-hidden">
+                        <p className="text-sm font-bold text-white truncate">{user.name || 'Admin'}</p>
+                        <p className="text-xs text-slate-400 truncate">{user.email}</p>
                     </div>
                     <button className="ml-auto text-slate-400 hover:text-white">
                         <PiSignOut className="text-xl" />
