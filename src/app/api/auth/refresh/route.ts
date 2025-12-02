@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { db } from "@/lib/db";
-import { refreshTokens } from "@/lib/db/schema";
+import { refreshTokens, users } from "@/lib/db/schema";
 import { verifyRefreshToken, signAccessToken } from "@/lib/auth/jwt";
 import { verifyPassword } from "@/lib/auth/password";
 import { eq, and, gt } from "drizzle-orm";
@@ -42,11 +42,30 @@ export async function POST() {
     return NextResponse.json({ success: false, message: "Invalid or revoked refresh token" }, { status: 401 });
   }
 
+  // Fetch user data
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, payload.userId),
+    columns: { id: true, name: true, email: true, role: true }
+  });
+
+  if (!user) {
+    return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+  }
+
   // Issue new Access Token
   const newAccessToken = await signAccessToken({ userId: payload.userId, role: payload.role });
 
   return NextResponse.json(
-    { success: true, accessToken: newAccessToken },
+    {
+      success: true,
+      accessToken: newAccessToken,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    },
     { status: 200 }
   );
 }
