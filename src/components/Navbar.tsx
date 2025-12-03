@@ -64,7 +64,8 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8 absolute left-1/2 -translate-x-1/2 transform">
             <Link href="/" className="!text-white hover:!text-brand-200 text-sm font-medium tracking-wide transition-colors">Home</Link>
             <Link href="/rooms" className="!text-white hover:!text-brand-200 text-sm font-medium tracking-wide transition-colors">Rooms</Link>
-          {pathname !== '/rooms' && !pathname?.startsWith("/rooms/") && (
+            <Link href="/dining" className="!text-white hover:!text-brand-200 text-sm font-medium tracking-wide transition-colors">Dining</Link>
+            {pathname !== '/rooms' && !pathname?.startsWith("/rooms/") && pathname !== '/dining' && (
               <>
                 <a href="#gallery" className="!text-white hover:!text-brand-200 text-sm font-medium tracking-wide transition-colors">Gallery</a>
                 <a href="#contact" className="!text-white hover:!text-brand-200 text-sm font-medium tracking-wide transition-colors">Contact</a>
@@ -113,7 +114,7 @@ export default function Navbar() {
               <Link href="/login" className="!text-white font-medium text-sm hover:underline">Login</Link>
             )}
 
-            {!pathname?.startsWith("/rooms/") && (
+            {pathname !== "/rooms" && !pathname?.startsWith("/rooms/") && (
               <a href="#" className="!bg-brand-500 hover:!bg-brand-600 !text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-lg hover:shadow-brand-500/30 text-sm">
                 Book Now
               </a>
@@ -156,7 +157,8 @@ export default function Navbar() {
         <div className="flex-1 flex flex-col items-center justify-center space-y-8 p-6">
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-serif text-white hover:text-brand-400 transition-colors">Home</Link>
           <Link href="/rooms" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-serif text-white hover:text-brand-400 transition-colors">Rooms</Link>
-          {pathname !== '/rooms' && !pathname?.startsWith("/rooms/") && (
+          <Link href="/dining" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-serif text-white hover:text-brand-400 transition-colors">Dining</Link>
+          {pathname !== '/rooms' && !pathname?.startsWith("/rooms/") && pathname !== '/dining' && (
             <>
               <a href="#gallery" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-serif text-white hover:text-brand-400 transition-colors">Gallery</a>
               <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-serif text-white hover:text-brand-400 transition-colors">Contact</a>
@@ -175,7 +177,7 @@ export default function Navbar() {
             <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white/80 hover:text-white transition-colors">Login</Link>
           )}
 
-          {!pathname?.startsWith("/rooms/") && (
+          {pathname !== "/rooms" && !pathname?.startsWith("/rooms/") && (
             <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="!bg-brand-500 !text-white px-10 py-4 rounded-full font-bold shadow-lg hover:!bg-brand-600 transition-all text-lg w-full max-w-xs text-center">
               Book Now
             </a>

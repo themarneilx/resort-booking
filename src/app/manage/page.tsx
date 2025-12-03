@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { db } from "@/lib/db";
-import { users } from "@/lib/db/schema";
+import { users, bookings } from "@/lib/db/schema";
 import { verifyRefreshToken } from "@/lib/auth/jwt";
 import { eq } from "drizzle-orm";
 import UserDashboardClient from "@/components/UserDashboardClient";
@@ -24,5 +24,17 @@ export default async function ManagePage() {
   // Fallback name if null
   const userName = user.name || user.email.split("@")[0];
 
-  return <UserDashboardClient userName={userName} />;
+  const userBookings = await db.query.bookings.findMany({
+    where: eq(bookings.userId, user.id),
+    with: {
+      room: {
+        with: {
+          roomType: true,
+        },
+      },
+    },
+    orderBy: (bookings, { desc }) => [desc(bookings.createdAt)],
+  });
+
+  return <UserDashboardClient userName={userName} bookings={userBookings} />;
 }

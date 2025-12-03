@@ -63,7 +63,7 @@ export async function POST(req: Request) {
             startDate,
             endDate,
             totalPrice,
-            status: "CONFIRMED"
+            status: "PENDING_PAYMENT"
         }).returning();
 
         return NextResponse.json({ success: true, booking: newBooking[0] });
