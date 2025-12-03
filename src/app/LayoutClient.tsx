@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { App } from "antd";
 
 interface User {
   id: string;
@@ -25,9 +26,11 @@ export default function LayoutClient({
 
   return (
     <AuthProvider initialUser={user}>
-      {!hideLayout && <Navbar />}
-      <main>{children}</main>
-      {!hideLayout && <Footer />}
+      <App>
+        {!hideLayout && <Navbar />}
+        <main>{children}</main>
+        {!hideLayout && <Footer />}
+      </App>
     </AuthProvider>
   );
 }

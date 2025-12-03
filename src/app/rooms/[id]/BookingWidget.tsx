@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DatePicker, message } from "antd";
+import { DatePicker, App } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
@@ -18,6 +18,7 @@ interface RoomType {
 }
 
 export default function BookingWidget({ room }: { room: RoomType }) {
+    const { message } = App.useApp();
     const { user } = useAuth();
     const router = useRouter();
     const [dates, setDates] = useState<[Dayjs | null, Dayjs | null] | null>(null);
